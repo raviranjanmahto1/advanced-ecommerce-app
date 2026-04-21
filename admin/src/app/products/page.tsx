@@ -8,61 +8,70 @@ export default function ProductsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Products</h1>
-        <button className="bg-primary text-primary-foreground flex items-center px-4 py-2 rounded-md hover:opacity-90 transition-opacity">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Products</h1>
+        <button className="bg-primary text-primary-foreground flex items-center justify-center px-4 py-2 rounded-md hover:opacity-90 transition-opacity w-full sm:w-auto">
           <Plus size={16} className="mr-2" /> Add Product
         </button>
       </div>
 
-      <div className="rounded-md border bg-card text-card-foreground shadow-sm">
+      <div className="rounded-md border bg-card text-card-foreground shadow-sm overflow-hidden">
         {isLoading ? (
-          <div className="p-8 text-center text-muted-foreground">Loading products...</div>
+          <div className="p-12 text-center flex flex-col items-center text-muted-foreground">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+            Loading products...
+          </div>
         ) : error ? (
-          <div className="p-8 text-center text-red-500">Error loading products. Check backend.</div>
+          <div className="p-8 text-center text-red-500 bg-red-50 dark:bg-red-950/20 m-4 rounded-lg">Error loading products. Check backend.</div>
         ) : products && products.length > 0 ? (
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase bg-muted/50 border-b">
-              <tr>
-                <th className="px-6 py-3 font-medium">ID</th>
-                <th className="px-6 py-3 font-medium">NAME</th>
-                <th className="px-6 py-3 font-medium">PRICE</th>
-                <th className="px-6 py-3 font-medium">CATEGORY</th>
-                <th className="px-6 py-3 font-medium">BRAND</th>
-                <th className="px-6 py-3 font-medium text-right">ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr key={product._id} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
-                  <td className="px-6 py-4 font-mono text-xs text-muted-foreground">{product._id.substring(0, 8)}...</td>
-                  <td className="px-6 py-4 font-medium">{product.name}</td>
-                  <td className="px-6 py-4">${product.price}</td>
-                  <td className="px-6 py-4">{product.category}</td>
-                  <td className="px-6 py-4">{product.brand}</td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end space-x-2">
-                      <button className="p-2 text-blue-500 hover:bg-blue-50 rounded-md transition-colors">
-                        <Edit size={16} />
-                      </button>
-                      <button className="p-2 text-red-500 hover:bg-red-50 rounded-md transition-colors">
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="text-xs uppercase bg-muted/50 border-b">
+                <tr>
+                  <th className="px-4 md:px-6 py-3 font-medium whitespace-nowrap">ID</th>
+                  <th className="px-4 md:px-6 py-3 font-medium min-w-[150px]">NAME</th>
+                  <th className="px-4 md:px-6 py-3 font-medium">PRICE</th>
+                  <th className="px-4 md:px-6 py-3 font-medium hidden sm:table-cell">CATEGORY</th>
+                  <th className="px-4 md:px-6 py-3 font-medium hidden md:table-cell">BRAND</th>
+                  <th className="px-4 md:px-6 py-3 font-medium text-right">ACTIONS</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product._id} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
+                    <td className="px-4 md:px-6 py-4 font-mono text-xs text-muted-foreground">{product._id.substring(0, 6)}...</td>
+                    <td className="px-4 md:px-6 py-4 font-medium">
+                      <div className="line-clamp-2">{product.name}</div>
+                      {/* Show hidden columns on mobile inside the name cell */}
+                      <div className="sm:hidden text-xs text-muted-foreground mt-1">{product.category}</div>
+                    </td>
+                    <td className="px-4 md:px-6 py-4 font-semibold">${product.price}</td>
+                    <td className="px-4 md:px-6 py-4 hidden sm:table-cell">{product.category}</td>
+                    <td className="px-4 md:px-6 py-4 hidden md:table-cell">{product.brand}</td>
+                    <td className="px-4 md:px-6 py-4 text-right">
+                      <div className="flex items-center justify-end space-x-1 md:space-x-2">
+                        <button className="p-1.5 md:p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors">
+                          <Edit size={16} />
+                        </button>
+                        <button className="p-1.5 md:p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <div className="p-12 text-center flex flex-col items-center">
             <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center mb-4">
               <Package className="h-6 w-6 text-muted-foreground" />
             </div>
             <h3 className="text-lg font-medium">No products found</h3>
-            <p className="text-muted-foreground mt-1 mb-4">Get started by creating a new product.</p>
-            <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity">
-              Add Product
+            <p className="text-muted-foreground mt-1 mb-6 text-sm">Get started by creating a new product.</p>
+            <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity flex items-center">
+              <Plus size={16} className="mr-2" /> Add Product
             </button>
           </div>
         )}
