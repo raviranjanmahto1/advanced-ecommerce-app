@@ -9,6 +9,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
+const seedRoutes = require('./routes/seedRoutes');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get('/', (req, res) => { res.send('API is running...'); });
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/seed', seedRoutes);
 
 // MongoDB connection - just mock or connect if possible but continue
 mongoose.connect(process.env.MONGODB_URI)
