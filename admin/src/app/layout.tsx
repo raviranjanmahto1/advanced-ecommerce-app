@@ -6,6 +6,7 @@ import StoreProvider from '@/lib/redux/StoreProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import Sidebar from '@/components/layout/Sidebar';
 import Header from '@/components/layout/Header';
+import { Toaster } from '@/components/ui/sonner';
 import { useState, useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -56,6 +57,7 @@ export default function RootLayout({
               </div>
             </div>
           </ThemeProvider>
+          <Toaster />
         </StoreProvider>
       </body>
     </html>

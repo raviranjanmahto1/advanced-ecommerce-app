@@ -8,6 +8,10 @@ export const adminApiSlice = createApi({
   baseQuery,
   tagTypes: ['Product', 'Order', 'User'],
   endpoints: (builder) => ({
+    seedDatabase: builder.mutation<any, void>({
+      query: () => '/api/seed',
+      invalidatesTags: ['Product', 'User', 'Order'],
+    }),
     login: builder.mutation({
       query: (data) => ({
         url: '/api/users/auth',
@@ -22,4 +26,4 @@ export const adminApiSlice = createApi({
   }),
 });
 
-export const { useLoginMutation, useGetProductsQuery } = adminApiSlice;
+export const { useLoginMutation, useGetProductsQuery, useSeedDatabaseMutation } = adminApiSlice;
