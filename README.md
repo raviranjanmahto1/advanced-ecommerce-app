@@ -5,6 +5,7 @@ A robust, full-stack e-commerce solution built with modern web technologies. Thi
 **🌍 Live Demos:**
 * **Storefront (Client):** [https://advanced-ecommerce-app-raviranjan.vercel.app](https://advanced-ecommerce-app-raviranjan.vercel.app)
 * **Admin Dashboard:** [https://advanced-ecommerce-app-admin-raviranjan.vercel.app](https://advanced-ecommerce-app-admin-raviranjan.vercel.app)
+* **API Backend:** [https://advanced-ecommerce-app-api-raviranjan.vercel.app](https://advanced-ecommerce-app-api-raviranjan.vercel.app)
 
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![React](https://img.shields.io/badge/React-19-blue)
@@ -20,6 +21,7 @@ The repository is organized into three main directories, each serving a distinct
 ### `/client` (Customer Storefront)
 A high-performance Next.js App Router application serving as the customer-facing storefront.
 * **Tech Stack:** Next.js 15, React, Tailwind CSS, Shadcn UI, Redux Toolkit, RTK Query.
+* **Environment Variables:** `NEXT_PUBLIC_API_URL` (points to the backend API).
 * **Features:** 
   * Responsive product grid and detailed product pages.
   * Complex state management using Redux (Shopping Cart, Auth).
@@ -29,6 +31,7 @@ A high-performance Next.js App Router application serving as the customer-facing
 ### `/admin` (Management Dashboard)
 A secure Next.js App Router application for store administrators.
 * **Tech Stack:** Next.js 15, React, Tailwind CSS, Shadcn UI, Redux Toolkit, RTK Query.
+* **Environment Variables:** `NEXT_PUBLIC_API_URL` (points to the backend API).
 * **Features:**
   * Protected dashboard layout with sidebar navigation.
   * Analytics overview (Revenue, Orders, Users).
@@ -63,14 +66,22 @@ To run this platform locally, you will need to start all three services. Ensure 
 ### 2. Client Setup
 1. Open a new terminal and navigate to the client: `cd client`
 2. Install dependencies: `npm install`
-3. Start the Next.js development server: `npm run dev`
-4. The storefront will be available at `http://localhost:3000`
+3. Configure environment variables in `client/.env.local`:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:5000
+   ```
+4. Start the Next.js development server: `npm run dev`
+5. The storefront will be available at `http://localhost:3000`
 
 ### 3. Admin Setup
 1. Open a new terminal and navigate to the admin directory: `cd admin`
 2. Install dependencies: `npm install`
-3. Start the Next.js development server: `npm run dev -- -p 3001`
-4. The admin portal will be available at `http://localhost:3001`
+3. Configure environment variables in `admin/.env.local`:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:5000
+   ```
+4. Start the Next.js development server: `npm run dev -- -p 3001`
+5. The admin portal will be available at `http://localhost:3001`
 
 ## 🔒 Authentication Flow
 This application uses industry-standard security practices for authentication. Instead of storing tokens in vulnerable `localStorage`, the server issues HTTP-only cookies containing the JWT. This protects the application from Cross-Site Scripting (XSS) attacks while maintaining seamless session management via RTK Query and Express middleware.
