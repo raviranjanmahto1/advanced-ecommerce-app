@@ -54,7 +54,7 @@ To run this platform locally, you will need to start all three services. Ensure 
    JWT_SECRET=your_super_secret_key_here
    NODE_ENV=development
    ```
-4. Start the development server: `npm run dev` (or `node server.js`)
+4. Start the development server: `npm run dev` (or `node index.js`)
 
 ### 2. Client Setup
 1. Open a new terminal and navigate to the client: `cd client`
