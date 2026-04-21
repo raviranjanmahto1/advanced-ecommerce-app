@@ -2,6 +2,10 @@
 
 A robust, full-stack e-commerce solution built with modern web technologies. This platform features a scalable monorepo-style architecture with distinct applications for the customer storefront (Client), the management dashboard (Admin), and the API backend (Server).
 
+**🌍 Live Demos:**
+* **Storefront (Client):** [https://advanced-ecommerce-app-raviranjan.vercel.app](https://advanced-ecommerce-app-raviranjan.vercel.app)
+* **Admin Dashboard:** [https://advanced-ecommerce-app-admin-raviranjan.vercel.app](https://advanced-ecommerce-app-admin-raviranjan.vercel.app)
+
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![React](https://img.shields.io/badge/React-19-blue)
 ![Redux Toolkit](https://img.shields.io/badge/Redux%20Toolkit-RTK-purple)
