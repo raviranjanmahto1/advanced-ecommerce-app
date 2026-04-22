@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, TouchEvent } from 'react';
+import { useState, useEffect, TouchEvent, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -32,23 +32,39 @@ export default function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  
+  // Use a ref to store the timer so we can clear it manually
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 5000);
-    return () => clearInterval(timer);
+  const nextSlide = useCallback(() => {
+    setCurrent(prev => (prev === slides.length - 1 ? 0 : prev + 1));
   }, []);
 
-  const prevSlide = () => {
-    setCurrent(current === 0 ? slides.length - 1 : current - 1);
-  };
+  const prevSlide = useCallback(() => {
+    setCurrent(prev => (prev === 0 ? slides.length - 1 : prev - 1));
+  }, []);
 
-  const nextSlide = () => {
-    setCurrent(current === slides.length - 1 ? 0 : current + 1);
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      nextSlide();
+    }, 5000);
+  }, [nextSlide]);
+
+  useEffect(() => {
+    startTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [startTimer]);
+
+  const handleManualInteraction = (action: () => void) => {
+    action();
+    // Reset the timer when a user interacts manually
+    startTimer();
   };
 
   const onTouchStart = (e: TouchEvent) => {
@@ -68,9 +84,9 @@ export default function HeroCarousel() {
     const isRightSwipe = distance < -minSwipeDistance;
 
     if (isLeftSwipe) {
-      nextSlide();
+      handleManualInteraction(nextSlide);
     } else if (isRightSwipe) {
-      prevSlide();
+      handleManualInteraction(prevSlide);
     }
   };
 
@@ -109,13 +125,13 @@ export default function HeroCarousel() {
 
       {/* Navigation Buttons */}
       <button 
-        onClick={prevSlide}
+        onClick={() => handleManualInteraction(prevSlide)}
         className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer border border-white/20 backdrop-blur-sm hidden md:block"
       >
         <ChevronLeft size={24} />
       </button>
       <button 
-        onClick={nextSlide}
+        onClick={() => handleManualInteraction(nextSlide)}
         className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer border border-white/20 backdrop-blur-sm hidden md:block"
       >
         <ChevronRight size={24} />
@@ -126,8 +142,8 @@ export default function HeroCarousel() {
         {slides.map((_, index) => (
           <button
             key={index}
-            onClick={() => setCurrent(index)}
-            className={`h-1.5 transition-all duration-300 rounded-full ${
+            onClick={() => handleManualInteraction(() => setCurrent(index))}
+            className={`h-1.5 transition-all duration-300 rounded-full cursor-pointer ${
               index === current ? 'w-8 bg-white' : 'w-4 bg-white/40'
             }`}
             aria-label={`Go to slide ${index + 1}`}
