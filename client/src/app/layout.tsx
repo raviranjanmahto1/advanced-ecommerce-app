@@ -5,6 +5,7 @@ import StoreProvider from '@/lib/redux/StoreProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import LayoutWrapper from '@/components/layout/LayoutWrapper';
 import CartSync from '@/components/layout/CartSync';
+import { Toaster } from '@/components/ui/sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,6 +31,7 @@ export default function RootLayout({
           >
             <CartSync />
             <LayoutWrapper>{children}</LayoutWrapper>
+            <Toaster />
           </ThemeProvider>
         </StoreProvider>
       </body>

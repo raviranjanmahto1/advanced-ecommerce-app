@@ -6,6 +6,7 @@ import { addToCart, removeFromCart } from '@/lib/redux/slices/cartSlice';
 import { Plus, Minus, ShoppingCart, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Loader from '@/components/ui/Loader';
+import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Trash2 } from 'lucide-react';
@@ -45,52 +46,61 @@ export default function CartPage() {
         </div>
       </div>
       
-      <div className="container mx-auto flex flex-col md:flex-row gap-4 md:gap-8 px-3 sm:px-4 flex-1 pb-32 md:pb-10 relative">
+      <div className="container mx-auto flex flex-col md:flex-row gap-4 md:gap-8 px-0 sm:px-4 flex-1 pb-32 md:pb-10 relative">
       <div className="w-full md:w-2/3 flex-shrink-0">
-        <div className="space-y-3">
+        <div className="space-y-0">
             {cartItems.map((item: any) => (
               <motion.div 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 key={item._id} 
-                className="flex items-center justify-between border border-border p-3 rounded-md shadow-sm bg-card gap-3"
+                className="flex items-center justify-between border-b border-border p-3 md:rounded-md md:border md:shadow-sm md:mb-3 bg-card"
               >
-                <div className="flex items-center space-x-3 flex-1 overflow-hidden">
-                  <div className="w-16 h-16 bg-muted rounded-sm flex shrink-0 items-center justify-center text-xs overflow-hidden border border-border">
-                    <img src={item.image.startsWith('http') ? item.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${item.image}`} alt={item.name} className="object-cover w-full h-full" />
-                  </div>
-                  <Link href={`/product/${item._id}`} className="font-medium text-sm hover:text-primary transition-colors line-clamp-2">
-                    {item.name}
-                  </Link>
-                </div>
                 
-                <div className="flex items-center space-x-3 shrink-0">
-                  <div className="text-base font-bold w-16 text-right">${item.price}</div>
+                <div className="flex flex-col w-full gap-2">
                   
-                  <div className="flex items-center bg-background border border-input rounded-md shadow-sm overflow-hidden h-7">
-                    <button 
-                      onClick={() => dispatch(addToCart({ ...item, qty: item.qty - 1 }))}
-                      disabled={item.qty <= 1}
-                      className="w-6 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  {/* Top Row: Image, Name, Delete */}
+                  <div className="flex items-start justify-between w-full">
+                    <div className="flex items-start gap-3 flex-1 overflow-hidden pr-2">
+                      <div className="w-16 h-16 bg-muted rounded-sm flex shrink-0 items-center justify-center text-xs overflow-hidden border border-border">
+                        <img src={item.image.startsWith('http') ? item.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${item.image}`} alt={item.name} className="object-cover w-full h-full" />
+                      </div>
+                      <Link href={`/product/${item._id}`} className="font-medium text-sm hover:text-primary transition-colors line-clamp-2 pt-1">
+                        {item.name}
+                      </Link>
+                    </div>
+                    
+                    <button
+                      onClick={() => { dispatch(removeFromCart(item._id)); toast.info('Item removed from cart'); }}
+                      className="p-1.5 border border-red-200 text-red-500 bg-background hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition-colors cursor-pointer shrink-0"
                     >
-                      <Minus size={12} />
-                    </button>
-                    <span className="text-xs font-bold w-6 text-center border-x border-input h-full flex items-center justify-center">{item.qty}</span>
-                    <button 
-                      onClick={() => dispatch(addToCart({ ...item, qty: item.qty + 1 }))}
-                      disabled={item.qty >= item.countInStock}
-                      className="w-6 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Plus size={12} />
+                      <Trash2 size={14} />
                     </button>
                   </div>
                   
-                  <button
-                    onClick={() => dispatch(removeFromCart(item._id))}
-                    className="p-1.5 border border-red-200 text-red-500 bg-background hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition-colors cursor-pointer shrink-0"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                  {/* Bottom Row: Price and Qty */}
+                  <div className="flex items-center justify-between w-full pl-[76px]">
+                    <div className="text-base font-bold">${item.price}</div>
+                    
+                    <div className="flex items-center bg-background border border-input rounded-md shadow-sm overflow-hidden h-7">
+                      <button 
+                        onClick={() => dispatch(addToCart({ ...item, qty: item.qty - 1 }))}
+                        disabled={item.qty <= 1}
+                        className="w-8 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Minus size={12} />
+                      </button>
+                      <span className="text-xs font-bold w-8 text-center border-x border-input h-full flex items-center justify-center">{item.qty}</span>
+                      <button 
+                        onClick={() => dispatch(addToCart({ ...item, qty: item.qty + 1 }))}
+                        disabled={item.qty >= item.countInStock}
+                        className="w-8 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Plus size={12} />
+                      </button>
+                    </div>
+                  </div>
+                  
                 </div>
               </motion.div>
             ))}

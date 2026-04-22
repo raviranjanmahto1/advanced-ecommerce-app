@@ -6,6 +6,7 @@ import { RootState } from '@/lib/redux/store';
 import { addToCart, removeFromCart } from '@/lib/redux/slices/cartSlice';
 import { Plus, Minus } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 
 export default function ProductCard({ product }: { product: any }) {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export default function ProductCard({ product }: { product: any }) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     dispatch(addToCart({ ...product, qty: 1 }));
+    toast.success(`${product.name} added to cart`);
   };
 
   const handleIncrement = (e: React.MouseEvent) => {
@@ -32,6 +34,7 @@ export default function ProductCard({ product }: { product: any }) {
       dispatch(addToCart({ ...product, qty: qtyInCart - 1 }));
     } else {
       dispatch(removeFromCart(product._id));
+      toast.info('Item removed from cart');
     }
   };
 

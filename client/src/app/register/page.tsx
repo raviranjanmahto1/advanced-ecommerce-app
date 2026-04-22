@@ -8,6 +8,7 @@ import { setCredentials } from '@/lib/redux/slices/authSlice';
 import { apiSlice } from '@/lib/redux/slices/apiSlice';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -45,14 +46,15 @@ export default function RegisterPage() {
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setMessage('Passwords do not match');
+      toast.error('Passwords do not match');
     } else {
       try {
         const res = await register({ name, email, password }).unwrap();
         dispatch(setCredentials({ ...res }));
+        toast.success(`Welcome, ${res.name}! Account created successfully.`);
         router.push('/');
       } catch (err: any) {
-        setMessage(err?.data?.message || 'Failed to register');
+        toast.error(err?.data?.message || 'Failed to register');
       }
     }
   };
@@ -68,8 +70,8 @@ export default function RegisterPage() {
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 text-center">Create an Account</h1>
         <p className="text-muted-foreground text-center mb-6 text-sm">Join E-Shop to track orders and save wishlists</p>
         
-        {message && <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 text-red-600 text-sm p-3 mb-4 rounded-md">{message}</div>}
-        {(error as any) && !message && <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 text-red-600 text-sm p-3 mb-4 rounded-md">{(error as any)?.data?.message || 'Registration failed'}</div>}
+        
+        
         
         <form onSubmit={submitHandler} className="space-y-4">
           <div>

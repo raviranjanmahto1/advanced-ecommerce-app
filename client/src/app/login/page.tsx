@@ -9,6 +9,7 @@ import { addToCart } from '@/lib/redux/slices/cartSlice';
 import { apiSlice } from '@/lib/redux/slices/apiSlice';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { toast } from 'sonner';
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -59,9 +60,11 @@ export default function LoginPage() {
         console.error('Failed to fetch cart on login', e);
       }
       dispatch(setCredentials({ ...res }));
+      toast.success(`Welcome back, ${res.name}!`);
       router.push('/');
     } catch (err) {
       console.error(err);
+      toast.error((err as any)?.data?.message || 'Invalid email or password');
     }
   };
 
@@ -75,7 +78,7 @@ export default function LoginPage() {
     >
       <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 text-center">Welcome Back</h1>
       <p className="text-muted-foreground text-center mb-6 text-sm">Sign in to access your orders and wishlist</p>
-      {error && <div className="bg-red-100 text-red-700 p-3 mb-4 rounded">{(error as any)?.data?.message || 'Login failed'}</div>}
+      
       <form onSubmit={submitHandler} className="space-y-4">
         <div>
           <label className="block text-sm font-medium mb-1">Email Address</label>
