@@ -30,18 +30,22 @@ export default function CartPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Custom Cart Header */}
-      <div className="sticky top-0 z-50 flex items-center justify-between p-4 bg-background border-b shadow-sm mb-4 md:mb-8">
-        <h1 className="text-xl md:text-2xl font-bold tracking-tight">Shopping Cart</h1>
-        <button 
-          onClick={() => router.back()}
-          className="p-2 border border-input rounded-md hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
-          aria-label="Close Cart"
-        >
-          <X size={20} />
-        </button>
+      <div className="sticky top-0 z-50 bg-background border-b shadow-sm mb-4 md:mb-8">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-12">
+            <h1 className="text-xl font-bold tracking-tighter">Shopping Cart</h1>
+            <button 
+              onClick={() => router.back()}
+              className="p-1.5 md:p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+              aria-label="Close Cart"
+            >
+              <X size={18} className="md:w-5 md:h-5" />
+            </button>
+          </div>
+        </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-3 sm:px-0 flex-1 pb-10">
+      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-3 sm:px-4 flex-1 pb-10">
       <div className="md:col-span-2">
                 {cartItems.length === 0 ? (
           <motion.div 
