@@ -40,9 +40,11 @@ mongoose.connect(process.env.MONGODB_URI)
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
 // Handle uncaught exceptions and unhandled rejections globally
 process.on('uncaughtException', (err) => {
@@ -56,3 +58,5 @@ process.on('unhandledRejection', (err) => {
   console.log(err.name, err.message);
   process.exit(1);
 });
+
+module.exports = app;

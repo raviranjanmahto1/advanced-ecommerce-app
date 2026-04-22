@@ -1,11 +1,10 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const asyncHandler = require('../utils/asyncHandler');
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
 // @access  Public
-const asyncHandler = require('../utils/asyncHandler');
-
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -90,4 +89,4 @@ module.exports = {
   registerUser,
   logoutUser,
   getUserProfile,
-});
+};
