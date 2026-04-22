@@ -2,6 +2,7 @@
 
 import { apiSlice } from '@/lib/redux/slices/apiSlice';
 import Image from 'next/image';
+import HeroCarousel from '@/components/ui/HeroCarousel';
 import Link from 'next/link';
 
 // Inject products endpoint
@@ -24,9 +25,10 @@ export default function Home() {
 
   return (
     <div className="pb-4">
+      <HeroCarousel />
       <h1 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight px-2">Latest Products</h1>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {products?.map((product) => (
           <div key={product._id} className="group border rounded-xl overflow-hidden flex flex-col bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200">
             <Link href={`/product/${product._id}`} className="block relative aspect-square w-full overflow-hidden bg-muted">

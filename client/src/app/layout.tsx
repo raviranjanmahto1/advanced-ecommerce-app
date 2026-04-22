@@ -4,6 +4,7 @@ import './globals.css';
 import StoreProvider from '@/lib/redux/StoreProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,10 +29,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <main className="container mx-auto px-4 py-4">
+            <main className="container mx-auto px-4 py-4 min-h-[70vh]">
               {children}
             </main>
           </ThemeProvider>
+        <Footer />
         </StoreProvider>
       </body>
     </html>
