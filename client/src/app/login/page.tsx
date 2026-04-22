@@ -5,12 +5,16 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
 import { setCredentials } from '@/lib/redux/slices/authSlice';
+import { addToCart } from '@/lib/redux/slices/cartSlice';
 import { apiSlice } from '@/lib/redux/slices/apiSlice';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getCart: builder.query<any, void>({
+      query: () => '/api/cart',
+    }),
     login: builder.mutation({
       query: (data) => ({
         url: '/api/users/auth',
@@ -21,7 +25,7 @@ const extendedApi = apiSlice.injectEndpoints({
   }),
 });
 
-const { useLoginMutation } = extendedApi;
+const { useLoginMutation, useLazyGetCartQuery } = extendedApi;
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -31,6 +35,7 @@ export default function LoginPage() {
   const router = useRouter();
   
   const [login, { isLoading, error }] = useLoginMutation();
+  const [getCart] = useLazyGetCartQuery();
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
@@ -43,6 +48,16 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
+      
+      // Fetch user's saved cart from DB upon login
+      try {
+        const cartData = await getCart().unwrap();
+        if (cartData && cartData.length > 0) {
+           cartData.forEach((item: any) => dispatch(addToCart(item)));
+        }
+      } catch (e) {
+        console.error('Failed to fetch cart on login', e);
+      }
       dispatch(setCredentials({ ...res }));
       router.push('/');
     } catch (err) {

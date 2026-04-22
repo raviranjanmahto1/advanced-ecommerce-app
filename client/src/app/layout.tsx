@@ -5,6 +5,7 @@ import StoreProvider from '@/lib/redux/StoreProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import CartSync from '@/components/layout/CartSync';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <CartSync />
             <Navbar />
             <main className="container mx-auto px-0 sm:px-4 py-0 sm:py-4 min-h-[70vh]">
               {children}

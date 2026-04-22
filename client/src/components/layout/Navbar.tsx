@@ -112,17 +112,27 @@ export default function Navbar() {
             <Link href="/wishlist" className="relative p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors mr-4">
               <Heart size={20} />
               {wishlistItems.length > 0 && (
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  key={wishlistItems.length}
+                  className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-[10px] font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full"
+                >
                   {wishlistItems.length}
-                </span>
+                </motion.span>
               )}
             </Link>
             <Link href="/cart" className="relative p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
               <ShoppingCart size={20} />
               {cartItems.length > 0 && (
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  key={cartItems.reduce((a, c) => a + (c.qty || 1), 0)}
+                  className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-[10px] font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full"
+                >
                   {cartItems.reduce((a, c) => a + (c.qty || 1), 0)}
-                </span>
+                </motion.span>
               )}
             </Link>
 
@@ -160,17 +170,27 @@ export default function Navbar() {
             <Link href="/wishlist" className="relative p-1.5 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
               <Heart size={18} />
               {wishlistItems.length > 0 && (
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  key={wishlistItems.length}
+                  className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full"
+                >
                   {wishlistItems.length}
-                </span>
+                </motion.span>
               )}
             </Link>
             <Link href="/cart" className="relative p-1.5 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
               <ShoppingCart size={18} />
               {cartItems.length > 0 && (
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  key={cartItems.reduce((a, c) => a + (c.qty || 1), 0)}
+                  className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full"
+                >
                   {cartItems.reduce((a, c) => a + (c.qty || 1), 0)}
-                </span>
+                </motion.span>
               )}
             </Link>
             <button
@@ -209,8 +229,14 @@ export default function Navbar() {
       </AnimatePresence>
 
       {/* Mobile Navigation */}
+      <AnimatePresence>
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t">
+        <motion.div 
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          className="md:hidden border-t overflow-hidden"
+        >
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {userInfo ? (
               <>
@@ -234,8 +260,9 @@ export default function Navbar() {
               </Link>
             )}
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </nav>
   );
 }

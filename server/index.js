@@ -9,6 +9,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 const seedRoutes = require('./routes/seedRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
@@ -40,6 +41,7 @@ app.get('/', (req, res) => { res.send('API is running...'); });
 // Routes
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/cart', cartRoutes);
 app.use('/api/seed', seedRoutes);
 
 app.use(notFound);
