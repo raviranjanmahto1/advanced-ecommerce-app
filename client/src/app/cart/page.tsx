@@ -45,99 +45,84 @@ export default function CartPage() {
         </div>
       </div>
       
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-3 sm:px-4 flex-1 pb-10">
-      <div className="md:col-span-2">
-                {cartItems.length === 0 ? (
-          <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center justify-center py-16 bg-muted/30 rounded-xl border border-dashed text-center"
-        >
-          <ShoppingCart size={48} className="mb-4 text-muted-foreground opacity-20" />
-          <h2 className="text-xl font-medium mb-2">Your cart is empty</h2>
-          <p className="text-sm text-muted-foreground mb-6">Looks like you haven't added anything to your cart yet.</p>
-          <Link href="/products" className="bg-primary text-primary-foreground px-6 py-2.5 rounded-md font-medium hover:opacity-90 transition-opacity">
-            Explore Products
-          </Link>
-        </motion.div>
-        ) : (
-          <div className="space-y-4">
-            {cartItems.map((item) => (
+      <div className="container mx-auto flex flex-col md:flex-row gap-4 md:gap-8 px-3 sm:px-4 flex-1 pb-32 md:pb-10 relative">
+      <div className="w-full md:w-2/3 flex-shrink-0">
+        <div className="space-y-3">
+            {cartItems.map((item: any) => (
               <motion.div 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 key={item._id} 
-                className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 gap-4"
+                className="flex items-center justify-between border border-border p-3 rounded-md shadow-sm bg-card gap-3"
               >
-                <div className="flex items-center space-x-4 flex-1">
-                  <div className="w-20 h-20 sm:w-16 sm:h-16 bg-muted rounded-md flex shrink-0 items-center justify-center text-xs overflow-hidden border border-border">
+                <div className="flex items-center space-x-3 flex-1 overflow-hidden">
+                  <div className="w-16 h-16 bg-muted rounded-sm flex shrink-0 items-center justify-center text-xs overflow-hidden border border-border">
                     <img src={item.image.startsWith('http') ? item.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${item.image}`} alt={item.name} className="object-cover w-full h-full" />
                   </div>
-                  <Link href={`/product/${item._id}`} className="font-medium hover:text-primary transition-colors flex-1 line-clamp-2 sm:line-clamp-1">
+                  <Link href={`/product/${item._id}`} className="font-medium text-sm hover:text-primary transition-colors line-clamp-2">
                     {item.name}
                   </Link>
                 </div>
                 
-                <div className="flex items-center justify-between sm:justify-end sm:space-x-6 w-full sm:w-auto">
-                  <div className="text-lg font-bold w-24 sm:text-center">${item.price}</div>
+                <div className="flex items-center space-x-3 shrink-0">
+                  <div className="text-base font-bold w-16 text-right">${item.price}</div>
                   
-                  <div className="flex items-center bg-background border border-input rounded-md shadow-sm overflow-hidden h-8">
+                  <div className="flex items-center bg-background border border-input rounded-md shadow-sm overflow-hidden h-7">
                     <button 
                       onClick={() => dispatch(addToCart({ ...item, qty: item.qty - 1 }))}
                       disabled={item.qty <= 1}
-                      className="w-8 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-6 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Minus size={14} />
+                      <Minus size={12} />
                     </button>
-                    <span className="text-xs font-bold w-8 text-center border-x border-input h-full flex items-center justify-center">{item.qty}</span>
+                    <span className="text-xs font-bold w-6 text-center border-x border-input h-full flex items-center justify-center">{item.qty}</span>
                     <button 
                       onClick={() => dispatch(addToCart({ ...item, qty: item.qty + 1 }))}
                       disabled={item.qty >= item.countInStock}
-                      className="w-8 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-6 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Plus size={14} />
+                      <Plus size={12} />
                     </button>
                   </div>
                   
-                  <div className="w-auto sm:w-12 text-right">
-                    <button
-                      onClick={() => dispatch(removeFromCart(item._id))}
-                      className="p-1.5 md:p-2 border border-red-200 text-red-500 bg-background hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition-colors cursor-pointer"
-                    >
-                      <Trash2 size={16} className="md:w-[18px] md:h-[18px]" />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => dispatch(removeFromCart(item._id))}
+                    className="p-1.5 border border-red-200 text-red-500 bg-background hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition-colors cursor-pointer shrink-0"
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </motion.div>
             ))}
           </div>
-        )}
-      </div>
-      
-      <div className="md:col-span-1">
-        <div className="border rounded-lg p-6 bg-card text-card-foreground shadow-sm">
-          <h2 className="text-xl font-semibold mb-4 border-b pb-2">Order Summary</h2>
-          <div className="flex justify-between mb-2 text-muted-foreground">
-            <span>Items ({cartItems.reduce((acc: any, item: any) => acc + item.qty, 0)}):</span>
-            <span>${cartItems.reduce((acc: any, item: any) => acc + item.qty * item.price, 0).toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between mb-2 text-muted-foreground">
-            <span>Shipping:</span>
-            <span>Free</span>
-          </div>
-          <div className="flex justify-between mb-4 text-muted-foreground border-b pb-4">
-            <span>Platform Fee:</span>
-            <span>$2.99</span>
-          </div>
-          
-          <div className="mb-4">
-            <div className="flex">
-              <input type="text" placeholder="Coupon code" className="w-full p-2 border border-input rounded-l-md bg-background text-sm outline-none focus:border-primary" />
-              <button className="bg-secondary text-secondary-foreground px-3 py-2 rounded-r-md text-sm font-medium border border-l-0 border-input hover:bg-secondary/80 transition-colors">Apply</button>
+        </div>
+        
+        <div className="w-full md:w-1/3 fixed bottom-0 left-0 right-0 z-40 md:relative md:z-auto bg-background md:bg-transparent border-t md:border-t-0 p-4 md:p-0 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] md:shadow-none">
+        <div className="border border-border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
+          <h2 className="text-lg font-semibold mb-3 border-b pb-2 hidden md:block">Order Summary</h2>
+          <div className="hidden md:block">
+            <div className="flex justify-between mb-2 text-sm text-muted-foreground">
+              <span>Items ({cartItems.reduce((acc: any, item: any) => acc + item.qty, 0)}):</span>
+              <span>${cartItems.reduce((acc: any, item: any) => acc + item.qty * item.price, 0).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between mb-2 text-sm text-muted-foreground">
+              <span>Shipping:</span>
+              <span>Free</span>
+            </div>
+            <div className="flex justify-between mb-3 text-sm text-muted-foreground border-b pb-3">
+              <span>Platform Fee:</span>
+              <span>$2.99</span>
+            </div>
+            
+            <div className="mb-3">
+              <div className="flex">
+                <input type="text" placeholder="Coupon code" className="w-full p-1.5 px-2 border border-input rounded-l-md bg-background text-sm outline-none focus:border-primary" />
+                <button className="bg-secondary text-secondary-foreground px-3 py-1.5 rounded-r-md text-sm font-medium border border-l-0 border-input hover:bg-secondary/80 transition-colors cursor-pointer">Apply</button>
+              </div>
             </div>
           </div>
           
-          <div className="flex justify-between mb-6 font-bold text-xl">
+          <div className="flex justify-between items-center mb-3 font-bold text-lg md:text-xl border-b pb-2 md:pb-3">
             <span>Items:</span>
             <span>{cartItems.reduce((acc, item) => acc + item.qty, 0)}</span>
           </div>
