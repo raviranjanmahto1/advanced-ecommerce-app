@@ -2,10 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface CartState {
   cartItems: any[];
+  shippingAddress: any;
+  paymentMethod: string;
 }
 
 const initialState: CartState = {
   cartItems: [],
+  shippingAddress: {},
+  paymentMethod: 'PayPal',
 };
 
 const cartSlice = createSlice({
@@ -18,6 +22,10 @@ const cartSlice = createSlice({
         if (stored) {
           state.cartItems = JSON.parse(stored);
         }
+        const shipping = localStorage.getItem('shippingAddress');
+        if (shipping) state.shippingAddress = JSON.parse(shipping);
+        const payment = localStorage.getItem('paymentMethod');
+        if (payment) state.paymentMethod = JSON.parse(payment);
       }
     },
     addToCart: (state, action: PayloadAction<any>) => {
@@ -36,6 +44,24 @@ const cartSlice = createSlice({
         localStorage.setItem('cart', JSON.stringify(state.cartItems));
       }
     },
+    saveShippingAddress: (state, action: PayloadAction<any>) => {
+      state.shippingAddress = action.payload;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('shippingAddress', JSON.stringify(action.payload));
+      }
+    },
+    savePaymentMethod: (state, action: PayloadAction<string>) => {
+      state.paymentMethod = action.payload;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('paymentMethod', JSON.stringify(action.payload));
+      }
+    },
+    clearCartItems: (state) => {
+      state.cartItems = [];
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('cart');
+      }
+    },
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
       if (typeof window !== 'undefined') {
@@ -45,5 +71,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, syncCartFromStorage } = cartSlice.actions;
+export const { addToCart, removeFromCart, syncCartFromStorage, saveShippingAddress, savePaymentMethod, clearCartItems } = cartSlice.actions;
 export default cartSlice.reducer;

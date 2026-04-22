@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { ShoppingCart, User, Sun, Moon, Menu, X, ArrowLeft, Search, Heart } from 'lucide-react';
+import { ShoppingCart, User, Sun, Moon, Menu, X, ArrowLeft, Search, Heart, Package, Settings, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
@@ -138,10 +138,23 @@ export default function Navbar() {
 
             {userInfo ? (
               <div className="flex items-center space-x-3 ml-4 border-l pl-4">
-                <span className="text-sm font-medium">{userInfo.name}</span>
-                <button onClick={logoutHandler} className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
-                  Logout
-                </button>
+                <div className="relative group">
+                  <div className="flex items-center cursor-pointer text-sm font-medium hover:text-primary transition-colors">
+                    {userInfo.name}
+                  </div>
+                  {/* Dropdown */}
+                  <div className="absolute right-0 top-full mt-2 w-48 bg-card border border-border rounded-md shadow-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+                    <Link href="/profile" className="flex items-center px-4 py-2.5 text-sm hover:bg-muted transition-colors">
+                      <Settings size={16} className="mr-2 text-muted-foreground" /> Profile
+                    </Link>
+                    <Link href="/orders" className="flex items-center px-4 py-2.5 text-sm hover:bg-muted transition-colors">
+                      <Package size={16} className="mr-2 text-muted-foreground" /> My Orders
+                    </Link>
+                    <button onClick={logoutHandler} className="w-full flex items-center px-4 py-2.5 text-sm hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/30 transition-colors text-left border-t border-border">
+                      <LogOut size={16} className="mr-2 text-muted-foreground group-hover:text-red-600" /> Logout
+                    </button>
+                  </div>
+                </div>
               </div>
             ) : (
               <Link href="/login" className="p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center ml-2 transition-colors">

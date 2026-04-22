@@ -57,10 +57,10 @@ export default function CartPage() {
                 className="flex items-center justify-between border-b border-border p-3 md:rounded-md md:border md:shadow-sm md:mb-3 bg-card"
               >
                 
-                <div className="flex flex-col w-full gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center w-full gap-2 sm:gap-4 justify-between">
                   
                   {/* Top Row: Image, Name, Delete */}
-                  <div className="flex items-start justify-between w-full">
+                  <div className="flex items-start justify-between w-full sm:w-auto sm:flex-1">
                     <div className="flex items-start gap-3 flex-1 overflow-hidden pr-2">
                       <div className="w-16 h-16 bg-muted rounded-sm flex shrink-0 items-center justify-center text-xs overflow-hidden border border-border">
                         <img src={item.image.startsWith('http') ? item.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${item.image}`} alt={item.name} className="object-cover w-full h-full" />
@@ -79,8 +79,8 @@ export default function CartPage() {
                   </div>
                   
                   {/* Bottom Row: Price and Qty */}
-                  <div className="flex items-center justify-between w-full pl-[76px]">
-                    <div className="text-base font-bold">${item.price}</div>
+                  <div className="flex items-center justify-between w-full sm:w-auto pl-[76px] sm:pl-0 gap-4">
+                    <div className="text-base font-bold w-20 sm:text-right">${item.price}</div>
                     
                     <div className="flex items-center bg-background border border-input rounded-md shadow-sm overflow-hidden h-7">
                       <button 
@@ -119,6 +119,10 @@ export default function CartPage() {
               <span>Shipping:</span>
               <span>Free</span>
             </div>
+            <div className="flex justify-between mb-2 text-sm text-muted-foreground">
+              <span>Tax (Estimated):</span>
+              <span>${(cartItems.reduce((acc: any, item: any) => acc + item.qty * item.price, 0) * 0.08).toFixed(2)}</span>
+            </div>
             <div className="flex justify-between mb-3 text-sm text-muted-foreground border-b pb-3">
               <span>Platform Fee:</span>
               <span>$2.99</span>
@@ -138,7 +142,7 @@ export default function CartPage() {
           </div>
           <div className="flex justify-between mb-4 font-bold text-lg border-b pb-4">
             <span>Total:</span>
-            <span>${(cartItems.reduce((acc: any, item: any) => acc + item.qty * item.price, 0) + 2.99).toFixed(2)}</span>
+            <span>${(cartItems.reduce((acc: any, item: any) => acc + item.qty * item.price, 0) * 1.08 + 2.99).toFixed(2)}</span>
           </div>
           <button
             onClick={checkoutHandler}
