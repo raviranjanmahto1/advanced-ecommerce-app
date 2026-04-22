@@ -28,7 +28,7 @@ export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
       <div className="flex items-center">
         <button 
           onClick={onMenuClick}
-          className="mr-4 p-2 rounded-md hover:bg-accent md:hidden text-muted-foreground"
+          className="mr-4 p-2 border border-input rounded-md bg-background hover:bg-accent md:hidden text-muted-foreground cursor-pointer transition-colors"
         >
           <Menu size={24} />
         </button>
@@ -37,7 +37,7 @@ export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
         {mounted && (
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="p-2 rounded-md hover:bg-accent"
+            className="p-2 border border-input rounded-md bg-background hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
@@ -48,7 +48,7 @@ export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
             <span className="text-sm font-medium hidden sm:block">{adminInfo.name}</span>
             <button 
               onClick={logoutHandler} 
-              className="p-2 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400 text-muted-foreground transition-colors flex items-center"
+              className="p-2 border border-input rounded-md bg-background hover:border-red-200 hover:bg-red-50 dark:hover:bg-red-950/30 hover:text-red-600 dark:hover:text-red-400 text-muted-foreground transition-colors flex items-center cursor-pointer"
               title="Logout"
             >
               <LogOut size={20} />

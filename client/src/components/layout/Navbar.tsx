@@ -39,14 +39,14 @@ export default function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 rounded-md hover:bg-accent"
+                className="p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
                 aria-label="Toggle Theme"
               >
                 {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               </button>
             )}
             
-            <Link href="/cart" className="relative p-2 rounded-md hover:bg-accent flex items-center">
+            <Link href="/cart" className="relative p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
               <ShoppingCart size={20} />
               {cartItems.length > 0 && (
                 <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
@@ -58,12 +58,12 @@ export default function Navbar() {
             {userInfo ? (
               <div className="flex items-center space-x-3 ml-4 border-l pl-4">
                 <span className="text-sm font-medium">{userInfo.name}</span>
-                <button onClick={logoutHandler} className="text-sm text-muted-foreground hover:text-foreground">
+                <button onClick={logoutHandler} className="text-sm text-muted-foreground hover:text-foreground cursor-pointer">
                   Logout
                 </button>
               </div>
             ) : (
-              <Link href="/login" className="p-2 rounded-md hover:bg-accent flex items-center ml-2 border-l pl-4">
+              <Link href="/login" className="p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center ml-2 transition-colors">
                 <User size={20} className="mr-1" />
                 <span className="text-sm font-medium">Login</span>
               </Link>
@@ -75,12 +75,12 @@ export default function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 mr-2 rounded-md hover:bg-accent"
+                className="p-2 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
               >
                 {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               </button>
             )}
-            <Link href="/cart" className="relative p-2 mr-2 rounded-md hover:bg-accent flex items-center">
+            <Link href="/cart" className="relative p-2 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
               <ShoppingCart size={20} />
               {cartItems.length > 0 && (
                 <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
@@ -90,7 +90,7 @@ export default function Navbar() {
             </Link>
             <button
               onClick={toggleMobileMenu}
-              className="p-2 rounded-md hover:bg-accent focus:outline-none"
+              className="p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer focus:outline-none transition-colors"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

@@ -55,7 +55,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <h1 className="font-bold text-xl tracking-tight text-primary">Admin Portal</h1>
           <button 
             onClick={onClose}
-            className="p-2 rounded-md hover:bg-accent md:hidden text-muted-foreground"
+            className="p-2 border border-input rounded-md bg-background hover:bg-accent md:hidden text-muted-foreground cursor-pointer transition-colors"
           >
             <X size={20} />
           </button>
@@ -95,7 +95,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <button
             onClick={handleSeedDatabase}
             disabled={isSeeding}
-            className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-md transition-colors bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 dark:bg-amber-500/20 dark:text-amber-400 dark:hover:bg-amber-500/30 disabled:opacity-50"
+            className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-md border border-amber-500/30 transition-colors bg-amber-500/10 text-amber-600 hover:bg-amber-500/20 dark:bg-amber-500/20 dark:text-amber-400 dark:hover:bg-amber-500/30 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             {isSeeding ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>

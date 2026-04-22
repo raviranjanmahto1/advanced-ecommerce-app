@@ -40,7 +40,7 @@ export default function ProductPage() {
 
   return (
     <div className="pb-12 md:pb-20">
-      <Link href="/" className="inline-flex items-center text-sm font-medium mb-4 md:mb-6 hover:text-primary transition-colors bg-muted px-3 py-1.5 rounded-md">
+      <Link href="/" className="inline-flex items-center text-sm font-medium mb-4 md:mb-6 border border-input hover:bg-accent hover:text-accent-foreground transition-colors bg-background px-3 py-1.5 rounded-md cursor-pointer">
         <ArrowLeft size={16} className="mr-2" /> Back to Products
       </Link>
       
@@ -98,7 +98,7 @@ export default function ProductPage() {
                 <select
                   value={qty}
                   onChange={(e) => setQty(Number(e.target.value))}
-                  className="p-2 border rounded-md bg-background font-medium w-24 focus:ring-2 focus:ring-primary focus:outline-none"
+                  className="p-2 border rounded-md bg-background font-medium w-24 focus:ring-2 focus:ring-primary focus:outline-none cursor-pointer"
                 >
                   {[...Array(product.countInStock).keys()].map((x) => (
                     <option key={x + 1} value={x + 1}>
@@ -112,7 +112,7 @@ export default function ProductPage() {
             <button
               onClick={addToCartHandler}
               disabled={product.countInStock === 0}
-              className="w-full bg-primary text-primary-foreground py-3.5 rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 transition-colors mt-6 flex items-center justify-center text-lg shadow-sm"
+              className="w-full bg-primary text-primary-foreground py-3.5 rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors mt-6 flex items-center justify-center text-lg shadow-sm"
             >
               <ShoppingCart className="mr-2" size={20} /> Add To Cart
             </button>

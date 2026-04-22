@@ -10,7 +10,7 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Products</h1>
-        <button className="bg-primary text-primary-foreground flex items-center justify-center px-4 py-2 rounded-md hover:opacity-90 transition-opacity w-full sm:w-auto">
+        <button className="bg-primary text-primary-foreground flex items-center justify-center px-4 py-2 rounded-md hover:opacity-90 transition-opacity w-full sm:w-auto cursor-pointer">
           <Plus size={16} className="mr-2" /> Add Product
         </button>
       </div>
@@ -50,10 +50,10 @@ export default function ProductsPage() {
                     <td className="px-4 md:px-6 py-4 hidden md:table-cell">{product.brand}</td>
                     <td className="px-4 md:px-6 py-4 text-right">
                       <div className="flex items-center justify-end space-x-1 md:space-x-2">
-                        <button className="p-1.5 md:p-2 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-md transition-colors">
+                        <button className="p-1.5 md:p-2 border border-blue-200 text-blue-500 bg-background hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-md transition-colors cursor-pointer">
                           <Edit size={16} />
                         </button>
-                        <button className="p-1.5 md:p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md transition-colors">
+                        <button className="p-1.5 md:p-2 border border-red-200 text-red-500 bg-background hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition-colors cursor-pointer">
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -70,7 +70,7 @@ export default function ProductsPage() {
             </div>
             <h3 className="text-lg font-medium">No products found</h3>
             <p className="text-muted-foreground mt-1 mb-6 text-sm">Get started by creating a new product.</p>
-            <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity flex items-center">
+            <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:opacity-90 transition-opacity flex items-center cursor-pointer">
               <Plus size={16} className="mr-2" /> Add Product
             </button>
           </div>

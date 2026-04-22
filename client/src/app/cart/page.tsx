@@ -39,7 +39,7 @@ export default function CartPage() {
                   <select
                     value={item.qty}
                     onChange={(e) => dispatch(addToCart({ ...item, qty: Number(e.target.value) }))}
-                    className="w-full p-2 border rounded-md bg-background"
+                    className="w-full p-2 border rounded-md bg-background cursor-pointer"
                   >
                     {[...Array(item.countInStock).keys()].map((x) => (
                       <option key={x + 1} value={x + 1}>
@@ -51,7 +51,7 @@ export default function CartPage() {
                 <div className="w-16 text-right">
                   <button
                     onClick={() => dispatch(removeFromCart(item._id))}
-                    className="p-2 text-red-500 hover:bg-red-100 rounded-md transition-colors"
+                    className="p-2 border border-red-200 text-red-500 bg-background hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition-colors cursor-pointer"
                   >
                     <Trash2 size={20} />
                   </button>
@@ -76,7 +76,7 @@ export default function CartPage() {
           <button
             onClick={checkoutHandler}
             disabled={cartItems.length === 0}
-            className="w-full bg-primary text-primary-foreground py-3 rounded-md font-semibold hover:opacity-90 disabled:opacity-50 transition-opacity"
+            className="w-full bg-primary text-primary-foreground py-3 rounded-md font-semibold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-opacity"
           >
             Proceed To Checkout
           </button>
