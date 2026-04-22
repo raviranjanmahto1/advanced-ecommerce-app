@@ -11,14 +11,14 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
       
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, i) => {
           const Icon = stat.icon;
           return (
-            <div key={i} className="rounded-xl border bg-card text-card-foreground shadow-sm p-6">
+            <div key={i} className="rounded-xl border bg-card text-card-foreground shadow-sm p-4">
               <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <h3 className="tracking-tight text-sm font-medium">{stat.label}</h3>
                 <Icon className="h-4 w-4 text-muted-foreground" />
@@ -35,7 +35,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm col-span-4 p-6">
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm col-span-4 p-4">
           <div className="flex flex-col space-y-1.5 pb-4">
             <h3 className="font-semibold leading-none tracking-tight">Overview</h3>
           </div>
@@ -43,12 +43,12 @@ export default function Dashboard() {
             <span className="text-muted-foreground">Chart Placeholder (Recharts)</span>
           </div>
         </div>
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm col-span-3 p-6">
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm col-span-3 p-4">
           <div className="flex flex-col space-y-1.5 pb-4">
             <h3 className="font-semibold leading-none tracking-tight">Recent Sales</h3>
             <p className="text-sm text-muted-foreground">You made 265 sales this month.</p>
           </div>
-          <div className="space-y-8">
+          <div className="space-y-4">
             {[1, 2, 3, 4, 5].map((_, i) => (
               <div key={i} className="flex items-center">
                 <div className="h-9 w-9 rounded-full bg-muted flex items-center justify-center font-semibold text-sm">

@@ -51,7 +51,7 @@ export default function RootLayout({
               />
               <div className="flex-1 md:ml-64 flex flex-col overflow-hidden w-full">
                 <Header onMenuClick={() => setIsSidebarOpen(true)} />
-                <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-muted/30">
+                <main className="flex-1 overflow-y-auto p-3 md:p-4 bg-muted/30">
                   {children}
                 </main>
               </div>

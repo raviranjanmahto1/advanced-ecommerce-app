@@ -39,12 +39,12 @@ export default function ProductPage() {
   if (!product) return <div className="text-center py-10">Product not found.</div>;
 
   return (
-    <div className="pb-12 md:pb-20">
+    <div className="pb-6">
       <Link href="/" className="inline-flex items-center text-sm font-medium mb-4 md:mb-6 border border-input hover:bg-accent hover:text-accent-foreground transition-colors bg-background px-3 py-1.5 rounded-md cursor-pointer">
         <ArrowLeft size={16} className="mr-2" /> Back to Products
       </Link>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
         <div className="md:col-span-1 lg:col-span-1 border rounded-xl bg-muted overflow-hidden aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] flex items-center justify-center relative">
           {product.image ? (
             <img 
@@ -60,7 +60,7 @@ export default function ProductPage() {
           )}
         </div>
         
-        <div className="md:col-span-1 lg:col-span-1 space-y-4 md:space-y-6">
+        <div className="md:col-span-1 lg:col-span-1 space-y-3 md:space-y-4">
           <div>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight mb-2">{product.name}</h1>
             <div className="flex items-center text-sm text-muted-foreground mb-4">
@@ -79,7 +79,7 @@ export default function ProductPage() {
         </div>
         
         <div className="md:col-span-2 lg:col-span-1">
-          <div className="border rounded-xl p-5 md:p-6 bg-card shadow-sm space-y-4 sticky top-24">
+          <div className="border rounded-xl p-4 md:p-5 bg-card shadow-sm space-y-4 sticky top-24">
             <div className="flex justify-between border-b pb-3">
               <span className="text-muted-foreground">Price:</span>
               <span className="font-bold text-lg">${product.price}</span>
@@ -112,7 +112,7 @@ export default function ProductPage() {
             <button
               onClick={addToCartHandler}
               disabled={product.countInStock === 0}
-              className="w-full bg-primary text-primary-foreground py-3.5 rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors mt-6 flex items-center justify-center text-lg shadow-sm"
+              className="w-full bg-primary text-primary-foreground py-2 rounded-lg font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors mt-6 flex items-center justify-center text-lg shadow-sm"
             >
               <ShoppingCart className="mr-2" size={20} /> Add To Cart
             </button>

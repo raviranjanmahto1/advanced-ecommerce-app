@@ -23,10 +23,10 @@ export default function Home() {
   if (error) return <div className="text-center text-red-500 py-10 bg-red-50 dark:bg-red-950/20 rounded-lg mt-8 p-4">Error loading products. Make sure the backend server is running.</div>;
 
   return (
-    <div className="pb-10">
-      <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 tracking-tight px-2">Latest Products</h1>
+    <div className="pb-4">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight px-2">Latest Products</h1>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {products?.map((product) => (
           <div key={product._id} className="group border rounded-xl overflow-hidden flex flex-col bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200">
             <Link href={`/product/${product._id}`} className="block relative aspect-square w-full overflow-hidden bg-muted">
@@ -45,7 +45,7 @@ export default function Home() {
                  </div>
                )}
             </Link>
-            <div className="p-4 flex flex-col flex-grow">
+            <div className="p-3 flex flex-col flex-grow">
               <Link href={`/product/${product._id}`}>
                 <h2 className="text-base md:text-lg font-semibold mb-1 group-hover:text-primary transition-colors line-clamp-2">{product.name}</h2>
               </Link>

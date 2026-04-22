@@ -7,7 +7,7 @@ export default function ProductsPage() {
   const { data: products, isLoading, error } = useGetProductsQuery();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Products</h1>
         <button className="bg-primary text-primary-foreground flex items-center justify-center px-4 py-2 rounded-md hover:opacity-90 transition-opacity w-full sm:w-auto cursor-pointer">
@@ -28,27 +28,27 @@ export default function ProductsPage() {
             <table className="w-full text-sm text-left">
               <thead className="text-xs uppercase bg-muted/50 border-b">
                 <tr>
-                  <th className="px-4 md:px-6 py-3 font-medium whitespace-nowrap">ID</th>
-                  <th className="px-4 md:px-6 py-3 font-medium min-w-[150px]">NAME</th>
-                  <th className="px-4 md:px-6 py-3 font-medium">PRICE</th>
-                  <th className="px-4 md:px-6 py-3 font-medium hidden sm:table-cell">CATEGORY</th>
-                  <th className="px-4 md:px-6 py-3 font-medium hidden md:table-cell">BRAND</th>
-                  <th className="px-4 md:px-6 py-3 font-medium text-right">ACTIONS</th>
+                  <th className="px-3 md:px-4 py-2 font-medium whitespace-nowrap">ID</th>
+                  <th className="px-3 md:px-4 py-2 font-medium min-w-[150px]">NAME</th>
+                  <th className="px-3 md:px-4 py-2 font-medium">PRICE</th>
+                  <th className="px-3 md:px-4 py-2 font-medium hidden sm:table-cell">CATEGORY</th>
+                  <th className="px-3 md:px-4 py-2 font-medium hidden md:table-cell">BRAND</th>
+                  <th className="px-3 md:px-4 py-2 font-medium text-right">ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
                 {products.map((product) => (
                   <tr key={product._id} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
-                    <td className="px-4 md:px-6 py-4 font-mono text-xs text-muted-foreground">{product._id.substring(0, 6)}...</td>
-                    <td className="px-4 md:px-6 py-4 font-medium">
+                    <td className="px-3 md:px-4 py-2 font-mono text-xs text-muted-foreground">{product._id.substring(0, 6)}...</td>
+                    <td className="px-3 md:px-4 py-2 font-medium">
                       <div className="line-clamp-2">{product.name}</div>
                       {/* Show hidden columns on mobile inside the name cell */}
                       <div className="sm:hidden text-xs text-muted-foreground mt-1">{product.category}</div>
                     </td>
-                    <td className="px-4 md:px-6 py-4 font-semibold">${product.price}</td>
-                    <td className="px-4 md:px-6 py-4 hidden sm:table-cell">{product.category}</td>
-                    <td className="px-4 md:px-6 py-4 hidden md:table-cell">{product.brand}</td>
-                    <td className="px-4 md:px-6 py-4 text-right">
+                    <td className="px-3 md:px-4 py-2 font-semibold">${product.price}</td>
+                    <td className="px-3 md:px-4 py-2 hidden sm:table-cell">{product.category}</td>
+                    <td className="px-3 md:px-4 py-2 hidden md:table-cell">{product.brand}</td>
+                    <td className="px-3 md:px-4 py-2 text-right">
                       <div className="flex items-center justify-end space-x-1 md:space-x-2">
                         <button className="p-1.5 md:p-2 border border-blue-200 text-blue-500 bg-background hover:bg-blue-50 dark:hover:bg-blue-950/30 rounded-md transition-colors cursor-pointer">
                           <Edit size={16} />
