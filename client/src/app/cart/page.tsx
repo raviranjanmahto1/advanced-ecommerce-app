@@ -3,13 +3,20 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
 import { addToCart, removeFromCart } from '@/lib/redux/slices/cartSlice';
-import { Plus, Minus, ShoppingCart } from 'lucide-react';
+import { Plus, Minus, ShoppingCart, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import Loader from '@/components/ui/Loader';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const router = useRouter();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state: RootState) => state.cart);
@@ -18,11 +25,25 @@ export default function CartPage() {
     router.push('/login?redirect=shipping');
   };
 
+  if (!isMounted) return <Loader text="Loading your cart..." />;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* Custom Cart Header */}
+      <div className="sticky top-0 z-50 flex items-center justify-between p-4 bg-background border-b shadow-sm mb-4 md:mb-8">
+        <h1 className="text-xl md:text-2xl font-bold tracking-tight">Shopping Cart</h1>
+        <button 
+          onClick={() => router.back()}
+          className="p-2 border border-input rounded-md hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+          aria-label="Close Cart"
+        >
+          <X size={20} />
+        </button>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-3 sm:px-0 flex-1 pb-10">
       <div className="md:col-span-2">
-        <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
-        {cartItems.length === 0 ? (
+                {cartItems.length === 0 ? (
           <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -77,9 +98,9 @@ export default function CartPage() {
                   <div className="w-auto sm:w-12 text-right">
                     <button
                       onClick={() => dispatch(removeFromCart(item._id))}
-                      className="p-2 border border-red-200 text-red-500 bg-background hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition-colors cursor-pointer"
+                      className="p-1.5 md:p-2 border border-red-200 text-red-500 bg-background hover:bg-red-50 dark:hover:bg-red-950/30 rounded-md transition-colors cursor-pointer"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={16} className="md:w-[18px] md:h-[18px]" />
                     </button>
                   </div>
                 </div>
@@ -130,5 +151,6 @@ export default function CartPage() {
         </div>
       </div>
     </div>
+  </div>
   );
 }

@@ -167,19 +167,6 @@ export default function Navbar() {
                 {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
               </button>
             )}
-            <Link href="/wishlist" className="relative p-1.5 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
-              <Heart size={18} />
-              {wishlistItems.length > 0 && (
-                <motion.span 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  key={wishlistItems.length}
-                  className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full"
-                >
-                  {wishlistItems.length}
-                </motion.span>
-              )}
-            </Link>
             <Link href="/cart" className="relative p-1.5 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
               <ShoppingCart size={18} />
               {cartItems.length > 0 && (
@@ -229,20 +216,24 @@ export default function Navbar() {
       </AnimatePresence>
 
       {/* Mobile Navigation */}
-      <AnimatePresence>
       {isMobileMenuOpen && (
-        <motion.div 
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          className="md:hidden border-t overflow-hidden"
-        >
+        <div className="md:hidden border-t overflow-hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {userInfo ? (
               <>
                 <div className="px-3 py-2 text-sm font-medium border-b mb-2">
                   Signed in as: <span className="font-bold">{userInfo.name}</span>
                 </div>
+                <Link href="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent mb-1">
+                  <div className="flex items-center">
+                    <Heart size={20} className="mr-2" /> Wishlist
+                  </div>
+                  {wishlistItems.length > 0 && (
+                    <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
+                      {wishlistItems.length}
+                    </span>
+                  )}
+                </Link>
                 <button 
                   onClick={logoutHandler} 
                   className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent"
@@ -251,18 +242,29 @@ export default function Navbar() {
                 </button>
               </>
             ) : (
-              <Link 
-                href="/login" 
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center px-3 py-2 rounded-md text-base font-medium hover:bg-accent"
-              >
-                <User size={20} className="mr-2" /> Login
-              </Link>
+              <>
+                <Link href="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-md text-base font-medium hover:bg-accent mb-1">
+                  <div className="flex items-center">
+                    <Heart size={20} className="mr-2 text-muted-foreground" /> Wishlist
+                  </div>
+                  {wishlistItems.length > 0 && (
+                    <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
+                      {wishlistItems.length}
+                    </span>
+                  )}
+                </Link>
+                <Link 
+                  href="/login" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center px-3 py-2 rounded-md text-base font-medium hover:bg-accent"
+                >
+                  <User size={20} className="mr-2" /> Login
+                </Link>
+              </>
             )}
           </div>
-        </motion.div>
+        </div>
       )}
-      </AnimatePresence>
     </nav>
   );
 }
