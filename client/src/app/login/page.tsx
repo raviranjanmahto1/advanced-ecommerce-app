@@ -7,6 +7,7 @@ import { RootState } from '@/lib/redux/store';
 import { setCredentials } from '@/lib/redux/slices/authSlice';
 import { apiSlice } from '@/lib/redux/slices/apiSlice';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -50,8 +51,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-3xl font-bold mb-6">Sign In</h1>
+    <div className="min-h-[70vh] flex items-center justify-center px-4">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="max-w-md w-full border border-border rounded-xl p-6 md:p-8 bg-card shadow-sm"
+    >
+      <h1 className="text-2xl md:text-3xl font-bold tracking-tight mb-2 text-center">Welcome Back</h1>
+      <p className="text-muted-foreground text-center mb-6 text-sm">Sign in to access your orders and wishlist</p>
       {error && <div className="bg-red-100 text-red-700 p-3 mb-4 rounded">{(error as any)?.data?.message || 'Login failed'}</div>}
       <form onSubmit={submitHandler} className="space-y-4">
         <div>
@@ -77,7 +85,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-primary text-primary-foreground p-2 rounded-md hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="w-full bg-primary text-primary-foreground p-2.5 mt-2 rounded-md font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors shadow-sm"
         >
           {isLoading ? 'Signing In...' : 'Sign In'}
         </button>
@@ -85,6 +93,7 @@ export default function LoginPage() {
       <div className="mt-4 text-sm text-center">
         New Customer? <Link href="/register" className="text-primary hover:underline">Register</Link>
       </div>
+    </motion.div>
     </div>
   );
 }

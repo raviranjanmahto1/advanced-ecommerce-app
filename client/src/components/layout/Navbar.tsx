@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { ShoppingCart, User, Sun, Moon, Menu, X, ArrowLeft, Search } from 'lucide-react';
+import { ShoppingCart, User, Sun, Moon, Menu, X, ArrowLeft, Search, Heart } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
@@ -22,6 +22,7 @@ export default function Navbar() {
   
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { cartItems } = useSelector((state: RootState) => state.cart);
+  const { wishlistItems } = useSelector((state: RootState) => state.wishlist);
 
   useEffect(() => setMounted(true), []);
 
@@ -108,6 +109,14 @@ export default function Navbar() {
               </button>
             )}
             
+            <Link href="/wishlist" className="relative p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors mr-4">
+              <Heart size={20} />
+              {wishlistItems.length > 0 && (
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </Link>
             <Link href="/cart" className="relative p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
               <ShoppingCart size={20} />
               {cartItems.length > 0 && (
@@ -148,6 +157,14 @@ export default function Navbar() {
                 {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
               </button>
             )}
+            <Link href="/wishlist" className="relative p-1.5 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
+              <Heart size={18} />
+              {wishlistItems.length > 0 && (
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[10px] font-bold leading-none text-red-100 transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </Link>
             <Link href="/cart" className="relative p-1.5 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer flex items-center transition-colors">
               <ShoppingCart size={18} />
               {cartItems.length > 0 && (

@@ -6,8 +6,9 @@ import HeroCarousel from '@/components/ui/HeroCarousel';
 import { ArrowRight, Star, TrendingUp, Clock } from 'lucide-react';
 import Loader from '@/components/ui/Loader';
 import ProductCard from '@/components/ui/ProductCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
+import { clearRecentItems } from '@/lib/redux/slices/recentSlice';
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,13 +21,13 @@ const extendedApi = apiSlice.injectEndpoints({
 
 const { useGetProductsQuery } = extendedApi;
 
-const ProductGrid = ({ products, title, icon: Icon, linkText = "View All", href = "/products" }: { products: any[], title: string, icon: any, linkText?: string, href?: string }) => (
+const ProductGrid = ({ products, title, icon: Icon, linkText = "View All", href = "/products", onLinkClick }: { products: any[], title: string, icon: any, linkText?: string, href?: string, onLinkClick?: () => void }) => (
   <div className="mb-12">
     <div className="flex items-center justify-between mb-4 px-2 sm:px-0">
       <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center">
         <Icon className="mr-2 text-primary" size={24} /> {title}
       </h2>
-      <Link href={href} className="text-sm font-medium text-primary hover:underline flex items-center">
+      <Link href={href} onClick={(e) => { if(onLinkClick) { e.preventDefault(); onLinkClick(); } }} className="text-sm font-medium text-primary hover:underline flex items-center cursor-pointer">
         {linkText} <ArrowRight size={16} className="ml-1" />
       </Link>
     </div>
@@ -39,6 +40,7 @@ const ProductGrid = ({ products, title, icon: Icon, linkText = "View All", href 
 );
 
 export default function Home() {
+  const dispatch = useDispatch();
   const { data: products, isLoading, error } = useGetProductsQuery();
 
   if (isLoading) return <Loader text="Loading products..." />;
@@ -62,7 +64,7 @@ export default function Home() {
         <>
           {trendingProducts.length > 0 && <ProductGrid products={trendingProducts} title="Trending Now" icon={TrendingUp} />}
           {latestProducts.length > 0 && <ProductGrid products={latestProducts} title="New Arrivals" icon={Clock} linkText="View All" href="/products?sort=newest" />}
-          {recentlyViewed.length > 0 && <ProductGrid products={recentlyViewed} title="Recently Viewed" icon={Star} linkText="Clear History" />}
+          {recentlyViewed.length > 0 && <ProductGrid products={recentlyViewed} title="Recently Viewed" icon={Star} linkText="Clear History" href="#" onLinkClick={() => dispatch(clearRecentItems())} />}
         </>
       )}
     </div>
