@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { ShoppingCart, User, Sun, Moon, Menu, X, ArrowLeft } from 'lucide-react';
+import { ShoppingCart, User, Sun, Moon, Menu, X, ArrowLeft, Search } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
 import { logout } from '@/lib/redux/slices/authSlice';
@@ -13,6 +14,8 @@ export default function Navbar() {
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const dispatch = useDispatch();
   const pathname = usePathname();
   const router = useRouter();
@@ -30,6 +33,15 @@ export default function Navbar() {
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
   const isProductPage = pathname.startsWith('/product/');
+  
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchQuery)}`);
+      setIsSearchOpen(false);
+      setSearchQuery('');
+    }
+  };
 
   return (
     <nav className="border-b bg-background sticky top-0 z-50">
@@ -55,6 +67,37 @@ export default function Navbar() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Desktop Search */}
+            <div className="relative flex items-center">
+              <AnimatePresence>
+                {isSearchOpen && (
+                  <motion.form 
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: 200, opacity: 1 }}
+                    exit={{ width: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    onSubmit={handleSearch}
+                    className="overflow-hidden mr-2"
+                  >
+                    <input 
+                      type="text"
+                      autoFocus
+                      placeholder="Search..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full p-1.5 px-3 border border-input rounded-md bg-background text-sm outline-none focus:border-primary"
+                    />
+                  </motion.form>
+                )}
+              </AnimatePresence>
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className="p-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
+                aria-label="Search"
+              >
+                <Search size={20} />
+              </button>
+            </div>
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -91,6 +134,12 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="p-1.5 mr-2 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
+            >
+              <Search size={18} />
+            </button>
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
@@ -116,6 +165,31 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden border-t overflow-hidden"
+          >
+            <form onSubmit={handleSearch} className="p-3">
+              <div className="flex">
+                <input 
+                  type="text"
+                  autoFocus
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full p-2 border border-input rounded-l-md bg-background text-sm outline-none focus:border-primary"
+                />
+                <button type="submit" className="bg-primary text-primary-foreground px-4 rounded-r-md text-sm font-medium">Go</button>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useParams } from 'next/navigation';
 import { apiSlice } from '@/lib/redux/slices/apiSlice';
@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { ArrowLeft, ShoppingCart, Sparkles, Heart, Star, MessageSquare } from 'lucide-react';
 import { RootState } from '@/lib/redux/store';
 import { toggleWishlist } from '@/lib/redux/slices/wishlistSlice';
+import { addRecentItem } from '@/lib/redux/slices/recentSlice';
+import Loader from '@/components/ui/Loader';
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -38,12 +40,19 @@ export default function ProductPage() {
   const { wishlistItems } = useSelector((state: RootState) => state.wishlist);
   const isWishlisted = wishlistItems?.some((i: any) => i._id === id);
 
+  // Track as recently viewed
+  useEffect(() => {
+    if (product) {
+      dispatch(addRecentItem(product));
+    }
+  }, [product, dispatch]);
+
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
     router.push('/cart');
   };
 
-  if (isLoading) return <div className="min-h-[60vh] flex flex-col items-center justify-center text-muted-foreground"><div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div><p>Loading product...</p></div>;
+  if (isLoading) return <Loader text="Loading product..." />;
   if (error) return <div className="text-center text-red-500 py-10 bg-red-50 p-4 rounded-lg">Error loading product details.</div>;
   if (!product) return <div className="text-center py-10">Product not found.</div>;
 
@@ -57,11 +66,11 @@ export default function ProductPage() {
 
   return (
     <div className="pb-6">
-      <Link href="/" className="inline-flex items-center text-sm font-medium mb-4 md:mb-6 border border-input hover:bg-accent hover:text-accent-foreground transition-colors bg-background px-3 py-1.5 rounded-md cursor-pointer ml-2 sm:ml-0">
+      <Link href="/" className="hidden md:inline-flex items-center text-sm font-medium mb-4 md:mb-6 border border-input hover:bg-accent hover:text-accent-foreground transition-colors bg-background px-3 py-1.5 rounded-md cursor-pointer ml-2 sm:ml-0">
         <ArrowLeft size={16} className="mr-2" /> Back to Products
       </Link>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 px-2 sm:px-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 px-2 sm:px-0">
         <div className="md:col-span-1 lg:col-span-1 border rounded-md bg-muted overflow-hidden aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] flex items-center justify-center relative">
           {product.image ? (
             <img 
@@ -163,9 +172,14 @@ export default function ProductPage() {
 
             {/* Reviews Section */}
       <div className="mt-12 px-2 sm:px-0 border-t pt-8">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center mb-6">
-          <MessageSquare className="mr-2 text-primary" size={24} /> Customer Reviews
-        </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center">
+            <MessageSquare className="mr-2 text-primary" size={24} /> Customer Reviews
+          </h2>
+          <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium text-sm hover:opacity-90 transition-opacity cursor-pointer shadow-sm">
+            Write a Review
+          </button>
+        </div>
         {product.reviews && product.reviews.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {product.reviews.map((review: any) => (
@@ -200,7 +214,7 @@ export default function ProductPage() {
           <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center mb-6 border-b pb-2">
             <Sparkles className="mr-2 text-primary" size={24} /> You Might Also Like
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
             {relatedProducts.map((p) => (
               <div key={p._id} className="group border rounded-md overflow-hidden flex flex-col bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200">
                 <Link href={`/product/${p._id}`} className="block relative aspect-square w-full overflow-hidden bg-muted">

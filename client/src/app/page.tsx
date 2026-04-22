@@ -4,7 +4,10 @@ import { apiSlice } from '@/lib/redux/slices/apiSlice';
 import Link from 'next/link';
 import HeroCarousel from '@/components/ui/HeroCarousel';
 import { ArrowRight, Star, TrendingUp, Clock } from 'lucide-react';
+import Loader from '@/components/ui/Loader';
 import ProductCard from '@/components/ui/ProductCard';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/redux/store';
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,17 +20,17 @@ const extendedApi = apiSlice.injectEndpoints({
 
 const { useGetProductsQuery } = extendedApi;
 
-const ProductGrid = ({ products, title, icon: Icon, linkText = "View All" }: { products: any[], title: string, icon: any, linkText?: string }) => (
+const ProductGrid = ({ products, title, icon: Icon, linkText = "View All", href = "/products" }: { products: any[], title: string, icon: any, linkText?: string, href?: string }) => (
   <div className="mb-12">
     <div className="flex items-center justify-between mb-4 px-2 sm:px-0">
       <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center">
         <Icon className="mr-2 text-primary" size={24} /> {title}
       </h2>
-      <Link href="/products" className="text-sm font-medium text-primary hover:underline flex items-center">
+      <Link href={href} className="text-sm font-medium text-primary hover:underline flex items-center">
         {linkText} <ArrowRight size={16} className="ml-1" />
       </Link>
     </div>
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 px-2 sm:px-0">
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}
@@ -38,12 +41,13 @@ const ProductGrid = ({ products, title, icon: Icon, linkText = "View All" }: { p
 export default function Home() {
   const { data: products, isLoading, error } = useGetProductsQuery();
 
-  if (isLoading) return <div className="min-h-[60vh] flex flex-col items-center justify-center text-muted-foreground"><div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div><p>Loading products...</p></div>;
+  if (isLoading) return <Loader text="Loading products..." />;
   if (error) return <div className="text-center text-red-500 py-10 bg-red-50 dark:bg-red-950/20 rounded-lg mt-8 p-4">Error loading products. Make sure the backend server is running.</div>;
 
   const trendingProducts = products ? [...products].sort((a, b) => b.rating - a.rating).slice(0, 4) : [];
   const latestProducts = products ? [...products].reverse().slice(0, 8) : [];
-  const recentlyViewed = products ? [...products].sort(() => 0.5 - Math.random()).slice(0, 4) : []; // mock random for demo
+  const { recentItems } = useSelector((state: RootState) => state.recent);
+  const recentlyViewed = recentItems || [];
 
   return (
     <div className="pb-4">
@@ -57,7 +61,7 @@ export default function Home() {
       ) : (
         <>
           {trendingProducts.length > 0 && <ProductGrid products={trendingProducts} title="Trending Now" icon={TrendingUp} />}
-          {latestProducts.length > 0 && <ProductGrid products={latestProducts} title="New Arrivals" icon={Clock} />}
+          {latestProducts.length > 0 && <ProductGrid products={latestProducts} title="New Arrivals" icon={Clock} linkText="View All" href="/products?sort=newest" />}
           {recentlyViewed.length > 0 && <ProductGrid products={recentlyViewed} title="Recently Viewed" icon={Star} linkText="Clear History" />}
         </>
       )}

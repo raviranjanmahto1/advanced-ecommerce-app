@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
 import { addToCart, removeFromCart } from '@/lib/redux/slices/cartSlice';
 import { Plus, Minus } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function ProductCard({ product }: { product: any }) {
   const dispatch = useDispatch();
@@ -35,7 +36,14 @@ export default function ProductCard({ product }: { product: any }) {
   };
 
   return (
-    <div className="group border rounded-md overflow-hidden flex flex-col bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200 relative">
+    <motion.div 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.4 }}
+      whileHover={{ y: -4 }}
+      className="group border rounded-md overflow-hidden flex flex-col bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200 relative"
+    >
       
       <Link href={`/product/${product._id}`} className="block relative aspect-square w-full overflow-hidden bg-muted">
          {product.image ? (
@@ -68,13 +76,13 @@ export default function ProductCard({ product }: { product: any }) {
               <button 
                 onClick={handleAddToCart}
                 disabled={product.countInStock === 0}
-                className="w-8 h-8 rounded-full border border-input flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-background"
+                className="w-8 h-8 rounded-md border border-input flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-background"
                 aria-label="Add to cart"
               >
                 <Plus size={16} />
               </button>
             ) : (
-              <div className="flex items-center bg-background border border-input rounded-full shadow-sm overflow-hidden h-8">
+              <div className="flex items-center bg-background border border-input rounded-md shadow-sm overflow-hidden h-8">
                 <button 
                   onClick={handleDecrement}
                   className="w-7 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer"
@@ -94,6 +102,6 @@ export default function ProductCard({ product }: { product: any }) {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
