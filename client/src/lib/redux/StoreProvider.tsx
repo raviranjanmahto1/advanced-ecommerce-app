@@ -1,7 +1,24 @@
 'use client';
-import { useRef } from 'react';
-import { Provider } from 'react-redux';
+import { useRef, useEffect } from 'react';
+import { Provider, useDispatch } from 'react-redux';
 import { store } from './store';
+import { syncAuthFromStorage } from './slices/authSlice';
+import { syncCartFromStorage } from './slices/cartSlice';
+import { syncWishlistFromStorage } from './slices/wishlistSlice';
+import { syncRecentFromStorage } from './slices/recentSlice';
+
+function StorageSync() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(syncAuthFromStorage());
+    dispatch(syncCartFromStorage());
+    dispatch(syncWishlistFromStorage());
+    dispatch(syncRecentFromStorage());
+  }, [dispatch]);
+
+  return null;
+}
 
 export default function StoreProvider({
   children,
@@ -13,5 +30,10 @@ export default function StoreProvider({
     storeRef.current = store;
   }
 
-  return <Provider store={storeRef.current}>{children}</Provider>;
+  return (
+    <Provider store={storeRef.current}>
+      <StorageSync />
+      {children}
+    </Provider>
+  );
 }

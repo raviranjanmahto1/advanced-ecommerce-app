@@ -5,25 +5,35 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  adminInfo: typeof window !== 'undefined' && localStorage.getItem('adminInfo') 
-    ? JSON.parse(localStorage.getItem('adminInfo') as string) 
-    : null,
+  adminInfo: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    syncAuthFromStorage: (state) => {
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('adminInfo');
+        if (stored) {
+          state.adminInfo = JSON.parse(stored);
+        }
+      }
+    },
     setCredentials: (state, action: PayloadAction<any>) => {
       state.adminInfo = action.payload;
-      localStorage.setItem('adminInfo', JSON.stringify(action.payload));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('adminInfo', JSON.stringify(action.payload));
+      }
     },
     logout: (state) => {
       state.adminInfo = null;
-      localStorage.removeItem('adminInfo');
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('adminInfo');
+      }
     },
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, syncAuthFromStorage } = authSlice.actions;
 export default authSlice.reducer;

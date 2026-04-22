@@ -5,15 +5,21 @@ interface WishlistState {
 }
 
 const initialState: WishlistState = {
-  wishlistItems: typeof window !== 'undefined' && localStorage.getItem('wishlist') 
-    ? JSON.parse(localStorage.getItem('wishlist') as string) 
-    : [],
+  wishlistItems: [],
 };
 
 const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState,
   reducers: {
+    syncWishlistFromStorage: (state) => {
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('wishlist');
+        if (stored) {
+          state.wishlistItems = JSON.parse(stored);
+        }
+      }
+    },
     toggleWishlist: (state, action: PayloadAction<any>) => {
       const item = action.payload;
       const existItem = state.wishlistItems.find((x) => x._id === item._id);
@@ -24,10 +30,12 @@ const wishlistSlice = createSlice({
         state.wishlistItems = [...state.wishlistItems, item];
       }
 
-      localStorage.setItem('wishlist', JSON.stringify(state.wishlistItems));
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('wishlist', JSON.stringify(state.wishlistItems));
+      }
     },
   },
 });
 
-export const { toggleWishlist } = wishlistSlice.actions;
+export const { toggleWishlist, syncWishlistFromStorage } = wishlistSlice.actions;
 export default wishlistSlice.reducer;
