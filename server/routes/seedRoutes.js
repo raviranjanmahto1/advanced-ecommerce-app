@@ -19,7 +19,18 @@ router.get('/', asyncHandler(async (req, res) => {
   const adminUser = createdUsers[0]._id;
 
   const sampleProducts = products.map((product) => {
-    return { ...product, user: adminUser };
+    // Attach admin user to the product
+    const prod = { ...product, user: adminUser };
+    
+    // Attach admin user to all mocked reviews to satisfy schema
+    if (prod.reviews && prod.reviews.length > 0) {
+      prod.reviews = prod.reviews.map(review => ({
+        ...review,
+        user: adminUser 
+      }));
+    }
+    
+    return prod;
   });
 
   await Product.insertMany(sampleProducts);

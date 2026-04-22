@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useParams } from 'next/navigation';
 import { apiSlice } from '@/lib/redux/slices/apiSlice';
 import { addToCart } from '@/lib/redux/slices/cartSlice';
 import Link from 'next/link';
-import { ArrowLeft, ShoppingCart, Sparkles } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Sparkles, Heart, Star, MessageSquare } from 'lucide-react';
+import { RootState } from '@/lib/redux/store';
+import { toggleWishlist } from '@/lib/redux/slices/wishlistSlice';
 
 const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -33,6 +35,8 @@ export default function ProductPage() {
 
   const { data: product, isLoading, error } = useGetProductDetailsQuery(id);
   const { data: allProducts } = useGetProductsQuery();
+  const { wishlistItems } = useSelector((state: RootState) => state.wishlist);
+  const isWishlisted = wishlistItems?.some((i: any) => i._id === id);
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
@@ -106,31 +110,88 @@ export default function ProductPage() {
             </div>
 
             {product.countInStock > 0 && (
-              <div className="flex justify-between items-center border-b pb-2">
-                <span className="text-muted-foreground">Quantity:</span>
-                <select
-                  value={qty}
-                  onChange={(e) => setQty(Number(e.target.value))}
-                  className="p-1.5 border rounded-md bg-background font-medium w-20 focus:ring-2 focus:ring-primary focus:outline-none cursor-pointer"
-                >
-                  {[...Array(product.countInStock).keys()].map((x) => (
-                    <option key={x + 1} value={x + 1}>
-                      {x + 1}
-                    </option>
-                  ))}
-                </select>
+              <div className="flex justify-between items-center border-b pb-4">
+                <span className="text-muted-foreground font-medium">Quantity:</span>
+                <div className="flex items-center border border-input rounded-md bg-background">
+                  <button 
+                    onClick={() => setQty(Math.max(1, qty - 1))}
+                    className="px-3 py-1.5 hover:bg-accent hover:text-accent-foreground text-muted-foreground transition-colors cursor-pointer rounded-l-md border-r border-input"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-1.5 font-bold text-center w-12">{qty}</span>
+                  <button 
+                    onClick={() => setQty(Math.min(product.countInStock, qty + 1))}
+                    className="px-3 py-1.5 hover:bg-accent hover:text-accent-foreground text-muted-foreground transition-colors cursor-pointer rounded-r-md border-l border-input"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
             )}
             
-            <button
-              onClick={addToCartHandler}
-              disabled={product.countInStock === 0}
-              className="w-full bg-primary text-primary-foreground py-2 rounded-md font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors mt-4 flex items-center justify-center shadow-sm"
-            >
-              <ShoppingCart className="mr-2" size={18} /> Add To Cart
-            </button>
+            <div className="space-y-2 mt-4 pt-2">
+              <button
+                onClick={addToCartHandler}
+                disabled={product.countInStock === 0}
+                className="w-full bg-primary text-primary-foreground py-2.5 rounded-md font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors flex items-center justify-center shadow-sm"
+              >
+                <ShoppingCart className="mr-2" size={18} /> Add To Cart
+              </button>
+              
+              <button
+                onClick={() => { addToCartHandler(); router.push('/cart'); }}
+                disabled={product.countInStock === 0}
+                className="w-full bg-secondary text-secondary-foreground py-2.5 rounded-md font-semibold hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors flex items-center justify-center border border-border"
+              >
+                Buy Now
+              </button>
+              
+              <button
+                onClick={() => {
+                  dispatch(toggleWishlist(product));
+                  // Optionally add a toast here
+                }}
+                className="w-full bg-background text-foreground py-2.5 rounded-md font-semibold hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer transition-colors flex items-center justify-center border border-input"
+              >
+                <Heart className="mr-2" size={18} /> {isWishlisted ? 'Remove from Wishlist' : 'Save to Wishlist'}
+              </button>
+            </div>
           </div>
         </div>
+      </div>
+
+            {/* Reviews Section */}
+      <div className="mt-12 px-2 sm:px-0 border-t pt-8">
+        <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center mb-6">
+          <MessageSquare className="mr-2 text-primary" size={24} /> Customer Reviews
+        </h2>
+        {product.reviews && product.reviews.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            {product.reviews.map((review: any) => (
+              <div key={review._id || review.name} className="border rounded-md p-4 bg-card shadow-sm">
+                <div className="flex items-center justify-between mb-2 border-b pb-2">
+                  <span className="font-semibold">{review.name}</span>
+                  <div className="flex items-center">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={14} className={i < review.rating ? "text-yellow-500 fill-yellow-500" : "text-muted-foreground opacity-30"} />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-muted-foreground text-sm italic">"{review.comment}"</p>
+                {review.createdAt && (
+                  <span className="text-xs text-muted-foreground opacity-50 block mt-2">
+                    {new Date(review.createdAt).toLocaleDateString()}
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-muted/30 p-8 rounded-md text-center border border-dashed">
+            <p className="text-muted-foreground">No reviews yet. Be the first to review this product!</p>
+          </div>
+        )}
       </div>
 
       {/* Related Products Section */}
