@@ -53,7 +53,7 @@ export default function ProductPage() {
   };
 
   if (isLoading) return <Loader text="Loading product..." />;
-  if (error) return <div className="text-center text-red-500 py-10 bg-red-50 p-4 rounded-lg">Error loading product details.</div>;
+  if (error) return <div className="text-center text-red-500 py-10 bg-red-50 dark:bg-red-950/20 p-4 rounded-lg">Error loading product details.</div>;
   if (!product) return <div className="text-center py-10">Product not found.</div>;
 
   // Filter out current product and grab same category or random
@@ -71,7 +71,7 @@ export default function ProductPage() {
       </Link>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 px-2 sm:px-0">
-        <div className="md:col-span-1 lg:col-span-1 border rounded-md bg-muted overflow-hidden aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] flex items-center justify-center relative">
+        <div className="md:col-span-1 lg:col-span-1 border border-border rounded-md bg-muted overflow-hidden aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] flex items-center justify-center relative">
           {product.image ? (
             <img 
               src={product.image.startsWith('http') ? product.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${product.image}`}
@@ -95,7 +95,7 @@ export default function ProductPage() {
               Brand: {product.brand}
             </div>
           </div>
-          <div className="border-y py-3">
+          <div className="border-y border-border py-3">
             <span className="text-2xl md:text-3xl font-semibold text-primary">${product.price}</span>
           </div>
           <div>
@@ -105,13 +105,13 @@ export default function ProductPage() {
         </div>
         
         <div className="md:col-span-2 lg:col-span-1">
-          <div className="border rounded-md p-4 md:p-5 bg-card shadow-sm space-y-3 sticky top-24">
-            <div className="flex justify-between border-b pb-2">
+          <div className="border border-border rounded-md p-4 md:p-5 bg-card shadow-sm space-y-3 sticky top-24">
+            <div className="flex justify-between border-b border-border pb-2">
               <span className="text-muted-foreground">Price:</span>
               <span className="font-bold text-lg">${product.price}</span>
             </div>
             
-            <div className="flex justify-between border-b pb-2">
+            <div className="flex justify-between border-b border-border pb-2">
               <span className="text-muted-foreground">Status:</span>
               <span className={`font-medium ${product.countInStock > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500'}`}>
                 {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
@@ -119,7 +119,7 @@ export default function ProductPage() {
             </div>
 
             {product.countInStock > 0 && (
-              <div className="flex justify-between items-center border-b pb-4">
+              <div className="flex justify-between items-center border-b border-border pb-4">
                 <span className="text-muted-foreground font-medium">Quantity:</span>
                 <div className="flex items-center border border-input rounded-md bg-background">
                   <button 
@@ -171,7 +171,7 @@ export default function ProductPage() {
       </div>
 
             {/* Reviews Section */}
-      <div className="mt-12 px-2 sm:px-0 border-t pt-8">
+      <div className="mt-12 px-2 sm:px-0 border-t border-border pt-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
           <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center">
             <MessageSquare className="mr-2 text-primary" size={24} /> Customer Reviews
@@ -183,8 +183,8 @@ export default function ProductPage() {
         {product.reviews && product.reviews.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {product.reviews.map((review: any) => (
-              <div key={review._id || review.name} className="border rounded-md p-4 bg-card shadow-sm">
-                <div className="flex items-center justify-between mb-2 border-b pb-2">
+              <div key={review._id || review.name} className="border border-border rounded-md p-4 bg-card shadow-sm">
+                <div className="flex items-center justify-between mb-2 border-b border-border pb-2">
                   <span className="font-semibold">{review.name}</span>
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
@@ -202,7 +202,7 @@ export default function ProductPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-muted/30 p-8 rounded-md text-center border border-dashed">
+          <div className="bg-muted/30 p-8 rounded-md text-center border border-dashed border-border">
             <p className="text-muted-foreground">No reviews yet. Be the first to review this product!</p>
           </div>
         )}
@@ -211,7 +211,7 @@ export default function ProductPage() {
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
         <div className="mt-16 px-2 sm:px-0">
-          <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center mb-6 border-b pb-2">
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center mb-6 border-b border-border pb-2">
             <Sparkles className="mr-2 text-primary" size={24} /> You Might Also Like
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
