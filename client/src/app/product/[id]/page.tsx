@@ -48,7 +48,7 @@ export default function ProductPage() {
         <div className="md:col-span-1 lg:col-span-1 border rounded-xl bg-muted overflow-hidden aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] flex items-center justify-center relative">
           {product.image ? (
             <img 
-              src={product.image.startsWith('http') ? product.image : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${product.image}`}
+              src={product.image.startsWith('http') ? product.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${product.image}`}
               alt={product.name}
               className="object-cover w-full h-full"
               onError={(e) => {

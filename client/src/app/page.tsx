@@ -32,7 +32,7 @@ export default function Home() {
             <Link href={`/product/${product._id}`} className="block relative aspect-square w-full overflow-hidden bg-muted">
                {product.image ? (
                  <img 
-                   src={product.image.startsWith('http') ? product.image : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${product.image}`}
+                   src={product.image.startsWith('http') ? product.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${product.image}`}
                    alt={product.name}
                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
                    onError={(e) => {
