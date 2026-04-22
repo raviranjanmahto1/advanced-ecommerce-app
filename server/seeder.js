@@ -11,7 +11,8 @@ dotenv.config();
 
 const importData = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    const connectDB = require('./config/db');
+    await connectDB();
     
     await Order.deleteMany();
     await Product.deleteMany();
@@ -37,7 +38,8 @@ const importData = async () => {
 
 const destroyData = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    const connectDB = require('./config/db');
+    await connectDB();
     
     await Order.deleteMany();
     await Product.deleteMany();

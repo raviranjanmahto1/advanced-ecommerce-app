@@ -1,9 +1,9 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
+const connectDB = require('./config/db');
 
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
@@ -13,6 +13,18 @@ const seedRoutes = require('./routes/seedRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
+
+// Database connection middleware for Serverless environment
+// Ensure this is called BEFORE routes so the DB is ready for controllers
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database connection failed', error);
+    res.status(500).json({ message: 'Database connection failed', error: error.message });
+  }
+});
 
 // Middleware
 app.use(express.json());
@@ -33,15 +45,12 @@ app.use('/api/seed', seedRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-// MongoDB connection - just mock or connect if possible but continue
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB Connected'))
-  .catch((err) => console.log('MongoDB Connection Error: ', err.message));
-
 const PORT = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
+  app.listen(PORT, async () => {
+    // connect explicitly once for local development so it doesn't wait for first request
+    await connectDB();
     console.log(`Server running on port ${PORT}`);
   });
 }
@@ -50,13 +59,13 @@ if (process.env.NODE_ENV !== 'production') {
 process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
   console.log(err.name, err.message);
-  process.exit(1);
+  // process.exit(1);
 });
 
 process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');
   console.log(err.name, err.message);
-  process.exit(1);
+  // process.exit(1);
 });
 
 module.exports = app;
