@@ -24,13 +24,13 @@ export default function Home() {
   if (error) return <div className="text-center text-red-500 py-10 bg-red-50 dark:bg-red-950/20 rounded-lg mt-8 p-4">Error loading products. Make sure the backend server is running.</div>;
 
   return (
-    <div className="pb-4">
+    <div className="pb-4 px-2 sm:px-0">
       <HeroCarousel />
       <h1 className="text-2xl md:text-3xl font-bold mb-4 tracking-tight px-2">Latest Products</h1>
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {products?.map((product) => (
-          <div key={product._id} className="group border rounded-xl overflow-hidden flex flex-col bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200">
+          <div key={product._id} className="group border rounded-md overflow-hidden flex flex-col bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200">
             <Link href={`/product/${product._id}`} className="block relative aspect-square w-full overflow-hidden bg-muted">
                {product.image ? (
                  <img 
@@ -62,7 +62,7 @@ export default function Home() {
         ))}
         
         {(!products || products.length === 0) && (
-          <div className="col-span-full text-center text-muted-foreground py-16 bg-muted/30 rounded-xl border border-dashed">
+          <div className="col-span-full text-center text-muted-foreground py-16 bg-muted/30 rounded-md border border-dashed">
             <p className="text-lg font-medium mb-2">No products found</p>
             <p className="text-sm">Start the backend server and run the seeder to add some data!</p>
           </div>
