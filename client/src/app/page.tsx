@@ -43,12 +43,13 @@ export default function Home() {
   const dispatch = useDispatch();
   const { data: products, isLoading, error } = useGetProductsQuery();
 
+  const { recentItems } = useSelector((state: RootState) => state.recent);
+  
   if (isLoading) return <Loader text="Loading products..." />;
   if (error) return <div className="text-center text-red-500 py-10 bg-red-50 dark:bg-red-950/20 rounded-lg mt-8 p-4">Error loading products. Make sure the backend server is running.</div>;
 
   const trendingProducts = products ? [...products].sort((a, b) => b.rating - a.rating).slice(0, 4) : [];
   const latestProducts = products ? [...products].reverse().slice(0, 8) : [];
-  const { recentItems } = useSelector((state: RootState) => state.recent);
   const recentlyViewed = recentItems || [];
 
   return (
