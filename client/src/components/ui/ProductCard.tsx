@@ -37,37 +37,6 @@ export default function ProductCard({ product }: { product: any }) {
   return (
     <div className="group border rounded-md overflow-hidden flex flex-col bg-card text-card-foreground shadow-sm hover:shadow-md transition-all duration-200 relative">
       
-      {/* Quick Add To Cart Overlay on Image */}
-      <div className="absolute top-2 right-2 z-10">
-        {qtyInCart === 0 ? (
-          <button 
-            onClick={handleAddToCart}
-            disabled={product.countInStock === 0}
-            className="w-8 h-8 rounded-full bg-background/80 backdrop-blur-sm border border-border shadow-sm flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Add to cart"
-          >
-            <Plus size={16} />
-          </button>
-        ) : (
-          <div className="flex flex-col items-center bg-background/90 backdrop-blur-sm border border-border rounded-full shadow-sm py-1">
-            <button 
-              onClick={handleIncrement}
-              disabled={qtyInCart >= product.countInStock}
-              className="w-8 h-7 flex items-center justify-center hover:text-primary cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <Plus size={14} />
-            </button>
-            <span className="text-xs font-bold w-8 text-center">{qtyInCart}</span>
-            <button 
-              onClick={handleDecrement}
-              className="w-8 h-7 flex items-center justify-center hover:text-primary cursor-pointer"
-            >
-              <Minus size={14} />
-            </button>
-          </div>
-        )}
-      </div>
-
       <Link href={`/product/${product._id}`} className="block relative aspect-square w-full overflow-hidden bg-muted">
          {product.image ? (
            <img 
@@ -93,6 +62,36 @@ export default function ProductCard({ product }: { product: any }) {
         </div>
         <div className="flex items-center justify-between mt-auto pt-2 border-t">
           <span className="text-base md:text-lg font-bold">${product.price}</span>
+          
+          <div className="flex items-center">
+            {qtyInCart === 0 ? (
+              <button 
+                onClick={handleAddToCart}
+                disabled={product.countInStock === 0}
+                className="w-8 h-8 rounded-full border border-input flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed bg-background"
+                aria-label="Add to cart"
+              >
+                <Plus size={16} />
+              </button>
+            ) : (
+              <div className="flex items-center bg-background border border-input rounded-full shadow-sm overflow-hidden h-8">
+                <button 
+                  onClick={handleDecrement}
+                  className="w-7 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                >
+                  <Minus size={14} />
+                </button>
+                <span className="text-xs font-bold w-6 text-center border-x border-input h-full flex items-center justify-center">{qtyInCart}</span>
+                <button 
+                  onClick={handleIncrement}
+                  disabled={qtyInCart >= product.countInStock}
+                  className="w-7 h-full flex items-center justify-center hover:bg-accent hover:text-accent-foreground cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Plus size={14} />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

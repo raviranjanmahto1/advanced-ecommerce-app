@@ -29,7 +29,7 @@ export default function Navbar() {
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
-  const isHome = pathname === '/';
+  const isProductPage = pathname.startsWith('/product/');
 
   return (
     <nav className="border-b bg-background sticky top-0 z-50">
@@ -38,7 +38,7 @@ export default function Navbar() {
           
           <div className="flex items-center">
             {/* Mobile Back Button - only show if not on home page */}
-            {!isHome && (
+            {isProductPage && (
               <button 
                 onClick={() => router.back()}
                 className="md:hidden mr-3 p-1.5 border border-input bg-background rounded-md hover:bg-accent hover:text-accent-foreground cursor-pointer transition-colors"
