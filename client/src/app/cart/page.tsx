@@ -46,7 +46,7 @@ export default function CartPage() {
         </div>
       </div>
       
-      <div className="container mx-auto flex flex-col md:flex-row gap-4 md:gap-8 px-0 sm:px-4 flex-1 pb-48 md:pb-10 relative">
+      <div className="container mx-auto flex flex-col md:flex-row gap-0 md:gap-8 px-0 sm:px-4 flex-1 pb-48 md:pb-10 relative">
       <div className="w-full md:w-2/3 flex-shrink-0">
         <div className="space-y-0">
             {cartItems.map((item: any) => (
@@ -54,14 +54,14 @@ export default function CartPage() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 key={item._id} 
-                className="flex items-center justify-between border-b border-border p-3 md:rounded-md md:border md:shadow-sm md:mb-3 bg-card"
+                className="flex items-center justify-between border-b border-border p-2 sm:p-3 md:rounded-md md:border md:shadow-sm md:mb-3 bg-card"
               >
                 
-                <div className="flex flex-col sm:flex-row sm:items-center w-full gap-1 sm:gap-4 justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center w-full gap-0 sm:gap-4 justify-between">
                   
                   {/* Top Row: Image, Name, Delete */}
                   <div className="flex items-start justify-between w-full sm:w-auto sm:flex-1">
-                    <div className="flex items-start gap-3 flex-1 overflow-hidden pr-2">
+                    <div className="flex items-start gap-2 flex-1 overflow-hidden pr-2">
                       <div className="w-14 h-14 sm:w-16 sm:h-16 bg-muted rounded-sm flex shrink-0 items-center justify-center text-xs overflow-hidden border border-border">
                         <img src={item.image.startsWith('http') ? item.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${item.image}`} alt={item.name} className="object-cover w-full h-full" />
                       </div>

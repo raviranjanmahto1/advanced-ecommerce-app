@@ -19,8 +19,8 @@ export default function WishlistPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Custom Header */}
-      <div className="sticky top-0 z-50 flex items-center justify-between p-4 bg-background border-b shadow-sm mb-4 md:mb-8">
-        <div className="container mx-auto px-0 sm:px-4">
+      <div className="sticky top-0 z-50 bg-background border-b shadow-sm mb-4 md:mb-8">
+        <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-12">
             <div className="flex items-center">
               <Heart className="mr-2 text-primary" size={20} />
@@ -38,10 +38,8 @@ export default function WishlistPage() {
         </div>
       </div>
       
-<<<<<<< HEAD
       <div className="container mx-auto px-3 sm:px-4 flex-1 pb-10">
-      
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 px-2 sm:px-0">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
         {wishlistItems.map((product: any) => (
           <div key={product._id} className="relative group/wishlist">
             <button 
@@ -53,11 +51,6 @@ export default function WishlistPage() {
             </button>
             <ProductCard product={product} />
           </div>
-=======
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
-        {wishlistItems.map((product) => (
-          <ProductCard key={product._id} product={product} />
->>>>>>> a8a4686 (feat(admin, client): fix admin dashboard overflow and compact cart/wishlist layouts)
         ))}
         
         {wishlistItems.length === 0 && (
