@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
 import { setCredentials } from '@/lib/redux/slices/authSlice';
@@ -28,12 +29,14 @@ const extendedApi = apiSlice.injectEndpoints({
 
 const { useLoginMutation, useLazyGetCartQuery } = extendedApi;
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
   const dispatch = useDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/';
   
   const [login, { isLoading, error }] = useLoginMutation();
   const [getCart] = useLazyGetCartQuery();
@@ -41,7 +44,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (userInfo) {
-      router.push('/');
+      router.push(redirect);
     }
   }, [userInfo, router]);
 
@@ -61,7 +64,7 @@ export default function LoginPage() {
       }
       dispatch(setCredentials({ ...res }));
       toast.success(`Welcome back, ${res.name}!`);
-      router.push('/');
+      router.push(redirect);
     } catch (err) {
       console.error(err);
       toast.error((err as any)?.data?.message || 'Invalid email or password');
@@ -109,9 +112,17 @@ export default function LoginPage() {
         </button>
       </form>
       <div className="mt-4 text-sm text-center">
-        New Customer? <Link href="/register" className="text-primary hover:underline">Register</Link>
+        New Customer? <Link href={`/register?redirect=${redirect}`} className="text-primary hover:underline">Register</Link>
       </div>
     </motion.div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[70vh] flex items-center justify-center">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

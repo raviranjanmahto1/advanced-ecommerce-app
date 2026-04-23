@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
 import { setCredentials } from '@/lib/redux/slices/authSlice';
@@ -24,7 +25,7 @@ const extendedApi = apiSlice.injectEndpoints({
 
 const { useRegisterMutation } = extendedApi;
 
-export default function RegisterPage() {
+function RegisterContent() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,13 +34,15 @@ export default function RegisterPage() {
   
   const dispatch = useDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/';
   
   const [register, { isLoading, error }] = useRegisterMutation();
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     if (userInfo) {
-      router.push('/');
+      router.push(redirect);
     }
   }, [userInfo, router]);
 
@@ -52,7 +55,7 @@ export default function RegisterPage() {
         const res = await register({ name, email, password }).unwrap();
         dispatch(setCredentials({ ...res }));
         toast.success(`Welcome, ${res.name}! Account created successfully.`);
-        router.push('/');
+        router.push(redirect);
       } catch (err: any) {
         toast.error(err?.data?.message || 'Failed to register');
       }
@@ -127,9 +130,17 @@ export default function RegisterPage() {
           </button>
         </form>
         <div className="mt-6 text-sm text-center text-muted-foreground pt-4 border-t">
-          Already have an account? <Link href="/login" className="text-primary font-medium hover:underline ml-1 cursor-pointer">Login here</Link>
+          Already have an account? <Link href={`/login?redirect=${redirect}`} className="text-primary font-medium hover:underline ml-1 cursor-pointer">Login here</Link>
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[70vh] flex items-center justify-center">Loading...</div>}>
+      <RegisterContent />
+    </Suspense>
   );
 }

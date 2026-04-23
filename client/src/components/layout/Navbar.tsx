@@ -234,12 +234,18 @@ export default function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {userInfo ? (
               <>
-                <div className="px-3 py-2 text-sm font-medium border-b mb-2">
-                  Signed in as: <span className="font-bold">{userInfo.name}</span>
+                <div className="px-3 py-2 text-sm font-medium border-b border-border mb-2 text-muted-foreground">
+                  Account: <span className="font-bold text-foreground">{userInfo.name}</span>
                 </div>
-                <Link href="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent mb-1">
+                <Link href="/profile" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center px-3 py-2.5 rounded-md text-base font-medium hover:bg-accent mb-1 text-muted-foreground hover:text-foreground">
+                  <Settings size={20} className="mr-3" /> Profile
+                </Link>
+                <Link href="/orders" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center px-3 py-2.5 rounded-md text-base font-medium hover:bg-accent mb-1 text-muted-foreground hover:text-foreground">
+                  <Package size={20} className="mr-3" /> My Orders
+                </Link>
+                <Link href="/wishlist" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center justify-between px-3 py-2.5 rounded-md text-base font-medium hover:bg-accent mb-1 text-muted-foreground hover:text-foreground">
                   <div className="flex items-center">
-                    <Heart size={20} className="mr-2" /> Wishlist
+                    <Heart size={20} className="mr-3" /> Wishlist
                   </div>
                   {wishlistItems.length > 0 && (
                     <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-0.5 rounded-full">
@@ -247,11 +253,8 @@ export default function Navbar() {
                     </span>
                   )}
                 </Link>
-                <button 
-                  onClick={logoutHandler} 
-                  className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent"
-                >
-                  Logout
+                <button onClick={logoutHandler} className="w-full flex items-center px-3 py-2.5 rounded-md text-base font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors mt-2 border-t border-border">
+                  <LogOut size={20} className="mr-3" /> Logout
                 </button>
               </>
             ) : (

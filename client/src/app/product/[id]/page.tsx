@@ -8,6 +8,7 @@ import { addToCart } from '@/lib/redux/slices/cartSlice';
 import Link from 'next/link';
 import { ArrowLeft, ShoppingCart, Sparkles, Heart, Star, MessageSquare } from 'lucide-react';
 import { RootState } from '@/lib/redux/store';
+import { toast } from 'sonner';
 import { toggleWishlist } from '@/lib/redux/slices/wishlistSlice';
 import { addRecentItem } from '@/lib/redux/slices/recentSlice';
 import Loader from '@/components/ui/Loader';
@@ -25,17 +26,22 @@ const extendedApi = apiSlice.injectEndpoints({
   }),
 });
 
-const { useGetProductDetailsQuery, useGetProductsQuery } = extendedApi;
+const { useGetProductDetailsQuery, useGetProductsQuery, useCreateReviewMutation } = extendedApi;
 
 export default function ProductPage() {
   const params = useParams();
   const id = params.id as string;
   
   const [qty, setQty] = useState(1);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
   const { data: product, isLoading, error } = useGetProductDetailsQuery(id);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
+  const [createReview, { isLoading: isReviewLoading }] = useCreateReviewMutation();
   const { data: allProducts } = useGetProductsQuery();
   const { wishlistItems } = useSelector((state: RootState) => state.wishlist);
   const isWishlisted = wishlistItems?.some((i: any) => i._id === id);
@@ -46,6 +52,19 @@ export default function ProductPage() {
       dispatch(addRecentItem(product));
     }
   }, [product, dispatch]);
+
+  const submitReviewHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await createReview({ productId: id, rating, comment }).unwrap();
+      toast.success('Review submitted successfully!');
+      setRating(5);
+      setComment('');
+      setShowReviewForm(false);
+    } catch (err: any) {
+      toast.error(err?.data?.message || 'Failed to submit review');
+    }
+  };
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
@@ -176,10 +195,59 @@ export default function ProductPage() {
           <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center">
             <MessageSquare className="mr-2 text-primary" size={24} /> Customer Reviews
           </h2>
-          <button className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium text-sm hover:opacity-90 transition-opacity cursor-pointer shadow-sm">
-            Write a Review
-          </button>
+          {userInfo ? (
+            <button 
+              onClick={() => setShowReviewForm(!showReviewForm)}
+              className="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium text-sm hover:opacity-90 transition-opacity cursor-pointer shadow-sm"
+            >
+              {showReviewForm ? 'Cancel' : 'Write a Review'}
+            </button>
+          ) : (
+            <Link href="/login" className="bg-secondary text-secondary-foreground border border-border px-4 py-2 rounded-md font-medium text-sm hover:bg-accent transition-colors cursor-pointer shadow-sm">
+              Login to Review
+            </Link>
+          )}
         </div>
+        {showReviewForm && userInfo && (
+          <div className="bg-muted/30 border border-border rounded-md p-4 md:p-6 mb-6">
+            <h3 className="font-bold mb-4">Write a Customer Review</h3>
+            <form onSubmit={submitReviewHandler} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1.5">Rating</label>
+                <select 
+                  value={rating} 
+                  onChange={(e) => setRating(Number(e.target.value))}
+                  className="w-full sm:w-auto p-2 border border-input rounded-md bg-background outline-none focus:border-primary cursor-pointer"
+                >
+                  <option value="5">5 - Excellent</option>
+                  <option value="4">4 - Very Good</option>
+                  <option value="3">3 - Good</option>
+                  <option value="2">2 - Fair</option>
+                  <option value="1">1 - Poor</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1.5">Comment</label>
+                <textarea 
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  required
+                  rows={3}
+                  className="w-full p-2 border border-input rounded-md bg-background outline-none focus:border-primary resize-none"
+                  placeholder="What did you like or dislike?"
+                ></textarea>
+              </div>
+              <button 
+                type="submit" 
+                disabled={isReviewLoading}
+                className="bg-primary text-primary-foreground px-6 py-2 rounded-md font-medium hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
+              >
+                {isReviewLoading ? 'Submitting...' : 'Submit Review'}
+              </button>
+            </form>
+          </div>
+        )}
+        
         {product.reviews && product.reviews.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {product.reviews.map((review: any) => (
