@@ -23,7 +23,22 @@ export const adminApiSlice = createApi({
       query: () => '/api/products',
       providesTags: ['Product'],
     }),
+    getOrders: builder.query<any[], void>({
+      query: () => '/api/orders',
+      providesTags: ['Order'],
+    }),
+    deliverOrder: builder.mutation<any, string>({
+      query: (orderId) => ({
+        url: `/api/orders/${orderId}/deliver`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['Order'],
+    }),
+    getUsers: builder.query<any[], void>({
+      query: () => '/api/users',
+      providesTags: ['User'],
+    }),
   }),
 });
 
-export const { useLoginMutation, useGetProductsQuery, useSeedDatabaseMutation } = adminApiSlice;
+export const { useLoginMutation, useGetProductsQuery, useSeedDatabaseMutation, useGetOrdersQuery, useDeliverOrderMutation, useGetUsersQuery } = adminApiSlice;
