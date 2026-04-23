@@ -8,6 +8,7 @@ import Loader from '@/components/ui/Loader';
 import ProductCard from '@/components/ui/ProductCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
+import { useState, useEffect } from 'react';
 import { clearRecentItems } from '@/lib/redux/slices/recentSlice';
 
 const extendedApi = apiSlice.injectEndpoints({
@@ -23,7 +24,7 @@ const { useGetProductsQuery } = extendedApi;
 
 const ProductGrid = ({ products, title, icon: Icon, linkText = "View All", href = "/products", onLinkClick }: { products: any[], title: string, icon: any, linkText?: string, href?: string, onLinkClick?: () => void }) => (
   <div className="mb-12">
-    <div className="flex items-center justify-between mb-4 px-2 sm:px-0">
+    <div className="flex items-center justify-between mb-4 px-0">
       <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center">
         <Icon className="mr-2 text-primary" size={24} /> {title}
       </h2>
@@ -31,7 +32,7 @@ const ProductGrid = ({ products, title, icon: Icon, linkText = "View All", href 
         {linkText} <ArrowRight size={16} className="ml-1" />
       </Link>
     </div>
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 px-2 sm:px-0">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 px-0">
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}
@@ -40,12 +41,14 @@ const ProductGrid = ({ products, title, icon: Icon, linkText = "View All", href 
 );
 
 export default function Home() {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
   const dispatch = useDispatch();
   const { data: products, isLoading, error } = useGetProductsQuery();
 
   const { recentItems } = useSelector((state: RootState) => state.recent);
   
-  if (isLoading) return <Loader text="Loading products..." />;
+  if (!isMounted || isLoading) return <Loader text="Loading products..." />;
   if (error) return <div className="text-center text-red-500 py-10 bg-red-50 dark:bg-red-950/20 rounded-lg mt-8 p-4">Error loading products. Make sure the backend server is running.</div>;
 
   const trendingProducts = products ? [...products].sort((a, b) => b.rating - a.rating).slice(0, 4) : [];

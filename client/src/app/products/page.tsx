@@ -49,7 +49,7 @@ function ProductsContent() {
 
   return (
     <div className="pb-10 pt-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 md:mb-8 px-2 sm:px-0 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 md:mb-8 px-0 gap-4">
         <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
           {searchQuery ? `Search: "${searchQuery}"` : 'All Products'}
           <span className="text-sm font-normal text-muted-foreground ml-3">({filteredProducts.length} items)</span>
@@ -71,7 +71,7 @@ function ProductsContent() {
         </div>
       </div>
       
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-0">
         {filteredProducts.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}

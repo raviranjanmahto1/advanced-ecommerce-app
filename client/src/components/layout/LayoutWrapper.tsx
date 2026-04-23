@@ -14,7 +14,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
   return (
     <>
       {!isNoLayout && <Navbar />}
-      <main className={`container mx-auto ${isNoLayout ? 'px-0 sm:px-4 py-0' : 'px-0 sm:px-4 py-0 sm:py-4'} min-h-[70vh]`}>
+      <main className={`container mx-auto ${isNoLayout ? 'px-0 sm:px-4 py-0' : 'px-1 sm:px-4 py-0 sm:py-4'} min-h-[70vh]`}>
         {children}
       </main>
       {!isNoLayout && <Footer />}

@@ -38,7 +38,7 @@ export default function WishlistPage() {
       </div>
       
       <div className="container mx-auto px-3 sm:px-4 flex-1 pb-10">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-0">
           {wishlistItems.map((product: any) => (
             <motion.div key={product._id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative group/wishlist">
               <button 
@@ -53,7 +53,7 @@ export default function WishlistPage() {
           ))}
           
           {wishlistItems.length === 0 && (
-            <div className="col-span-full flex flex-col items-center justify-center text-muted-foreground py-20 bg-muted/30 rounded-xl border border-dashed mx-2 sm:mx-0">
+            <div className="col-span-full flex flex-col items-center justify-center text-muted-foreground py-20 bg-muted/30 rounded-xl border border-dashed mx-0">
               <Heart size={48} className="mb-4 opacity-20" />
               <p className="text-xl font-medium mb-2">Your wishlist is empty</p>
               <p className="text-sm mb-6">Save items you love to view them later.</p>
