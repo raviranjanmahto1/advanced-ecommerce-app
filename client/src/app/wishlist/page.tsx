@@ -1,12 +1,11 @@
 'use client';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/lib/redux/store';
 import ProductCard from '@/components/ui/ProductCard';
 import Link from 'next/link';
 import { Heart, X, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
 import { toggleWishlist } from '@/lib/redux/slices/wishlistSlice';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
@@ -39,31 +38,31 @@ export default function WishlistPage() {
       </div>
       
       <div className="container mx-auto px-3 sm:px-4 flex-1 pb-10">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
-        {wishlistItems.map((product: any) => (
-          <div key={product._id} className="relative group/wishlist">
-            <button 
-              onClick={() => { dispatch(toggleWishlist(product)); toast.success('Removed from wishlist'); }}
-              className="absolute top-2 right-2 z-20 w-8 h-8 rounded-md bg-background/80 backdrop-blur-sm border border-red-200 text-red-500 flex items-center justify-center hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer shadow-sm md:opacity-0 md:group-hover/wishlist:opacity-100"
-              aria-label="Remove from wishlist"
-            >
-              <Trash2 size={16} />
-            </button>
-            <ProductCard product={product} />
-          </div>
-        ))}
-        
-        {wishlistItems.length === 0 && (
-          <div className="col-span-full flex flex-col items-center justify-center text-muted-foreground py-20 bg-muted/30 rounded-xl border border-dashed mx-2 sm:mx-0">
-            <Heart size={48} className="mb-4 opacity-20" />
-            <p className="text-xl font-medium mb-2">Your wishlist is empty</p>
-            <p className="text-sm mb-6">Save items you love to view them later.</p>
-            <Link href="/products" className="bg-primary text-primary-foreground px-6 py-2.5 rounded-md font-medium hover:opacity-90 transition-opacity">
-              Explore Products
-            </Link>
-          </div>
-        )}
-      </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
+          {wishlistItems.map((product: any) => (
+            <motion.div key={product._id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative group/wishlist">
+              <button 
+                onClick={() => { dispatch(toggleWishlist(product)); toast.success('Removed from wishlist'); }}
+                className="absolute top-2 right-2 z-20 w-8 h-8 rounded-md bg-background/80 backdrop-blur-sm border border-red-200 text-red-500 flex items-center justify-center hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer shadow-sm md:opacity-0 md:group-hover/wishlist:opacity-100"
+                aria-label="Remove from wishlist"
+              >
+                <Trash2 size={16} />
+              </button>
+              <ProductCard product={product} />
+            </motion.div>
+          ))}
+          
+          {wishlistItems.length === 0 && (
+            <div className="col-span-full flex flex-col items-center justify-center text-muted-foreground py-20 bg-muted/30 rounded-xl border border-dashed mx-2 sm:mx-0">
+              <Heart size={48} className="mb-4 opacity-20" />
+              <p className="text-xl font-medium mb-2">Your wishlist is empty</p>
+              <p className="text-sm mb-6">Save items you love to view them later.</p>
+              <Link href="/products" className="bg-primary text-primary-foreground px-6 py-2.5 rounded-md font-medium hover:opacity-90 transition-opacity">
+                Explore Products
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
