@@ -91,7 +91,7 @@ export default function ProductPage() {
         <ArrowLeft size={16} className="mr-2" /> Back to Products
       </Link>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 px-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8 px-3 sm:px-0">
         <div className="md:col-span-1 lg:col-span-1 border border-border rounded-md bg-muted overflow-hidden aspect-square md:aspect-auto md:h-[400px] lg:h-[500px] flex items-center justify-center relative">
           {product.image ? (
             <img 
@@ -192,7 +192,7 @@ export default function ProductPage() {
       </div>
 
             {/* Reviews Section */}
-      <div className="mt-12 px-0 border-t border-border pt-8">
+      <div className="mt-12 px-3 sm:px-0 border-t border-border pt-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
           <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center">
             <MessageSquare className="mr-2 text-primary" size={24} /> Customer Reviews
@@ -280,7 +280,7 @@ export default function ProductPage() {
 
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
-        <div className="mt-16 px-0">
+        <div className="mt-16 px-3 sm:px-0">
           <h2 className="text-xl md:text-2xl font-bold tracking-tight flex items-center mb-6 border-b border-border pb-2">
             <Sparkles className="mr-2 text-primary" size={24} /> You Might Also Like
           </h2>

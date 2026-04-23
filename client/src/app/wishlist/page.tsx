@@ -37,7 +37,7 @@ export default function WishlistPage() {
         </div>
       </div>
       
-      <div className="container mx-auto px-3 sm:px-4 flex-1 pb-10">
+      <div className="container mx-auto px-0 sm:px-4 flex-1 pb-10">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-0">
           {wishlistItems.map((product: any) => (
             <motion.div key={product._id} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative group/wishlist">
