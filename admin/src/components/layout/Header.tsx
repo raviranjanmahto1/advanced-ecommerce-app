@@ -28,9 +28,9 @@ export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
       <div className="flex items-center">
         <button 
           onClick={onMenuClick}
-          className="mr-4 p-2 border border-input rounded-md bg-background hover:bg-accent md:hidden text-muted-foreground cursor-pointer transition-colors"
+          className="mr-3 p-2 border border-input rounded-md bg-background hover:bg-accent hover:text-accent-foreground md:hidden text-muted-foreground cursor-pointer transition-colors"
         >
-          <Menu size={24} />
+          <Menu size={20} />
         </button>
       </div>
       <div className="flex items-center space-x-2 sm:space-x-4">

@@ -1,6 +1,7 @@
 'use client';
 
 import { DollarSign, Package, ShoppingCart, Users } from 'lucide-react';
+import OverviewChart from '@/components/ui/OverviewChart';
 
 export default function Dashboard() {
   const stats = [
@@ -34,16 +35,14 @@ export default function Dashboard() {
         })}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm col-span-4 p-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 overflow-hidden w-full">
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm lg:col-span-4 p-4 overflow-hidden">
           <div className="flex flex-col space-y-1.5 pb-4">
             <h3 className="font-semibold leading-none tracking-tight">Overview</h3>
           </div>
-          <div className="h-[300px] flex items-center justify-center bg-muted/50 rounded-md border border-dashed">
-            <span className="text-muted-foreground">Chart Placeholder (Recharts)</span>
-          </div>
+          <div className="h-[300px] w-full pt-4"><OverviewChart /></div>
         </div>
-        <div className="rounded-xl border bg-card text-card-foreground shadow-sm col-span-3 p-4">
+        <div className="rounded-xl border bg-card text-card-foreground shadow-sm lg:col-span-3 p-4 overflow-hidden">
           <div className="flex flex-col space-y-1.5 pb-4">
             <h3 className="font-semibold leading-none tracking-tight">Recent Sales</h3>
             <p className="text-sm text-muted-foreground">You made 265 sales this month.</p>

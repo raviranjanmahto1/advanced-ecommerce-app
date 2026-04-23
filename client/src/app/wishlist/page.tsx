@@ -38,6 +38,7 @@ export default function WishlistPage() {
         </div>
       </div>
       
+<<<<<<< HEAD
       <div className="container mx-auto px-3 sm:px-4 flex-1 pb-10">
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4 px-2 sm:px-0">
@@ -52,6 +53,11 @@ export default function WishlistPage() {
             </button>
             <ProductCard product={product} />
           </div>
+=======
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
+        {wishlistItems.map((product) => (
+          <ProductCard key={product._id} product={product} />
+>>>>>>> a8a4686 (feat(admin, client): fix admin dashboard overflow and compact cart/wishlist layouts)
         ))}
         
         {wishlistItems.length === 0 && (

@@ -46,7 +46,7 @@ export default function CartPage() {
         </div>
       </div>
       
-      <div className="container mx-auto flex flex-col md:flex-row gap-4 md:gap-8 px-0 sm:px-4 flex-1 pb-32 md:pb-10 relative">
+      <div className="container mx-auto flex flex-col md:flex-row gap-4 md:gap-8 px-0 sm:px-4 flex-1 pb-48 md:pb-10 relative">
       <div className="w-full md:w-2/3 flex-shrink-0">
         <div className="space-y-0">
             {cartItems.map((item: any) => (
@@ -62,7 +62,7 @@ export default function CartPage() {
                   {/* Top Row: Image, Name, Delete */}
                   <div className="flex items-start justify-between w-full sm:w-auto sm:flex-1">
                     <div className="flex items-start gap-3 flex-1 overflow-hidden pr-2">
-                      <div className="w-16 h-16 bg-muted rounded-sm flex shrink-0 items-center justify-center text-xs overflow-hidden border border-border">
+                      <div className="w-14 h-14 sm:w-16 sm:h-16 bg-muted rounded-sm flex shrink-0 items-center justify-center text-xs overflow-hidden border border-border">
                         <img src={item.image.startsWith('http') ? item.image : `${'https://advanced-ecommerce-app-api-raviranjan.vercel.app'}${item.image}`} alt={item.name} className="object-cover w-full h-full" />
                       </div>
                       <Link href={`/product/${item._id}`} className="font-medium text-sm hover:text-primary transition-colors line-clamp-2 pt-1">
@@ -111,6 +111,10 @@ export default function CartPage() {
         <div className="border border-border rounded-lg p-4 bg-card text-card-foreground shadow-sm">
           <h2 className="text-lg font-semibold mb-3 border-b pb-2 hidden md:block">Order Summary</h2>
           <div className="hidden md:block">
+            <div className="flex justify-between mb-2 text-sm text-muted-foreground">
+              <span>Subtotal:</span>
+              <span>${cartItems.reduce((acc: any, item: any) => acc + item.qty * item.price, 0).toFixed(2)}</span>
+            </div>
             <div className="flex justify-between mb-2 text-sm text-muted-foreground">
               <span>Items ({cartItems.reduce((acc: any, item: any) => acc + item.qty, 0)}):</span>
               <span>${cartItems.reduce((acc: any, item: any) => acc + item.qty * item.price, 0).toFixed(2)}</span>
