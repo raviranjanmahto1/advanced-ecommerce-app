@@ -6,15 +6,18 @@ import Footer from './Footer';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isCart = pathname === '/cart';
+  
+  // Define all routes that should NOT have the standard Navbar and Footer
+  const noLayoutRoutes = ['/cart', '/wishlist', '/search', '/shipping', '/payment', '/placeorder'];
+  const isNoLayout = noLayoutRoutes.includes(pathname);
 
   return (
     <>
-      {!isCart && <Navbar />}
-      <main className={`container mx-auto ${isCart ? 'px-0 sm:px-4 py-0' : 'px-0 sm:px-4 py-0 sm:py-4'} min-h-[70vh]`}>
+      {!isNoLayout && <Navbar />}
+      <main className={`container mx-auto ${isNoLayout ? 'px-0 sm:px-4 py-0' : 'px-0 sm:px-4 py-0 sm:py-4'} min-h-[70vh]`}>
         {children}
       </main>
-      {!isCart && <Footer />}
+      {!isNoLayout && <Footer />}
     </>
   );
 }

@@ -23,7 +23,7 @@ export default function CartPage() {
   const { cartItems } = useSelector((state: RootState) => state.cart);
 
   const checkoutHandler = () => {
-    router.push('/login?redirect=shipping');
+    router.push('/shipping');
   };
 
   if (!isMounted) return <Loader text="Loading your cart..." />;
@@ -57,7 +57,7 @@ export default function CartPage() {
                 className="flex items-center justify-between border-b border-border p-3 md:rounded-md md:border md:shadow-sm md:mb-3 bg-card"
               >
                 
-                <div className="flex flex-col sm:flex-row sm:items-center w-full gap-2 sm:gap-4 justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center w-full gap-1 sm:gap-4 justify-between">
                   
                   {/* Top Row: Image, Name, Delete */}
                   <div className="flex items-start justify-between w-full sm:w-auto sm:flex-1">
